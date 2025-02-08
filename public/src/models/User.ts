@@ -7,6 +7,7 @@ interface UserAttributes {
     permission: string;
     password: string;
 }
+
 export class User extends Model<UserAttributes, UserCreationAttributes> implements
 UserAttributes {
     public id!: string;

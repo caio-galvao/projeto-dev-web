@@ -1,4 +1,5 @@
 import { User } from "../models/User";
+
 export class UserRepository {
  // Criar um novo usuário
     async createUser(id: string, name: string, permission: string, password: string) {
@@ -10,6 +11,7 @@ export class UserRepository {
             password
         });
     }
+    
     async getAllUsers() {
       return await User.findAll();
     }
