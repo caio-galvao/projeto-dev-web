@@ -1,7 +1,9 @@
 import * as express from "express";
 import * as dotenv from "dotenv";
 import sequelize from "./config/database";
-import { UserRepository } from "./repository/userRespository";
+import { UserRepository } from "./repository/userRepository";
+
+console.log("🚀 Servidor rodando...");
 
 dotenv.config();
 
