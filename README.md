@@ -19,4 +19,4 @@ Este projeto tem como objetivo fornecer um sistema para a locação e gerenciame
 
 ## Modelo Entidade-Relacionamento (MER)
 
-![Modelo Entidade-Relacionamento](assets/mer-diagrama.png)
+![Modelo Entidade-Relacionamento](assets/modelagem.jpg)
