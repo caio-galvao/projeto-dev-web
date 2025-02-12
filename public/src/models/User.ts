@@ -8,6 +8,8 @@ interface UserAttributes {
     password: string;
 }
 
+interface UserCreationAttributes extends UserAttributes {}
+
 export class User extends Model<UserAttributes, UserCreationAttributes> implements
 UserAttributes {
     public id!: string;
