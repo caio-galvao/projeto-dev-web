@@ -20,7 +20,7 @@ export class User extends Model<UserAttributes, UserCreationAttributes> implemen
 User.init(
     {
         id: {
-            type: DataTypes.STRING(11),
+            type: DataTypes.STRING(14),
             primaryKey: true,
         },
         name: {

@@ -3,10 +3,10 @@ import sequelize from '../config/database';
 
 interface RoomAttributes {
     id: number;
-    name: string;
     manager_id: string;
-    location: string;
+    name: string;
     hours_of_operation: string;
+    location: string;
     configuration: string;
     equipments: Array<string>;
 }
@@ -36,7 +36,7 @@ Room.init(
             unique: true,
         },
         manager_id: {
-            type: DataTypes.STRING(11),
+            type: DataTypes.STRING(14),
         },
         location: {
             type: DataTypes.STRING,

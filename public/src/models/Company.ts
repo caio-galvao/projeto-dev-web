@@ -30,7 +30,7 @@ Company.init(
             unique: true,
         },
         manager_id: {
-            type: DataTypes.STRING(11),
+            type: DataTypes.STRING(14),
         },
         location: {
             type: DataTypes.STRING,
