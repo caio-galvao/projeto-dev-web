@@ -4,8 +4,8 @@ import sequelize from '../config/database';
 interface UserAttributes {
     id: string;
     name: string;
-    permission: string;
     password: string;
+    type: string;
 }
 
 interface UserCreationAttributes extends UserAttributes {}
@@ -14,8 +14,8 @@ export class User extends Model<UserAttributes, UserCreationAttributes> implemen
 UserAttributes {
     public id!: string;
     public name!: string;
-    public permission!: string;
     public password!: string;
+    public type!: string;
 }
 // Inicialize o modelo com os campos no banco
 User.init(
@@ -28,14 +28,14 @@ User.init(
             type: DataTypes.STRING,
             allowNull: false,
         },
-        permission: {
-            type: DataTypes.STRING,
-            allowNull: false,
-            unique: true,
-        },
         password: {
             type: DataTypes.STRING,
             allowNull: false,
+        },
+        type: {
+            type: DataTypes.STRING,
+            allowNull: false,
+            unique: true,
         },
         },
         {
