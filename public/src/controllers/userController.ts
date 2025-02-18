@@ -1,4 +1,5 @@
 import { UserService } from "../services/userService";
+import { Request, Response } from "express"
 
 export class UserController {
     private userService: UserService;
@@ -30,3 +31,5 @@ export class UserController {
         }
     };
 }
+
+export default new UserController();
