@@ -10,14 +10,14 @@ export class UserController {
 
     async createCompany(req: Request, res: Response): Promise<void> {
         try {
-            const { id, name, password, type } = req.body;
+            const { id, name, manager_id, location } = req.body;
 
-            if (!id || !name || !password || !type) {
+            if (!id || !name || !manager_id || !location) {
                 res.status(400).json({ message: "Dados inválidos. Todos os campos são obrigatórios." });
                 return
             }
     
-            const user = await this.companyService.createCompany(id, name, password, type);
+            const user = await this.companyService.createCompany(id, name, manager_id, location);
 
             if(!user) {
                 res.status(409).json({ message: "Uma empresa com este ID já existe." });
@@ -84,15 +84,17 @@ export class UserController {
     }
     };
         
-    async deleteOneCompany(req: Request, res: Response) {
+    async deleteOneCompany(req: Request, res: Response): Promise<void> {
         try {
             const { id } = req.params; 
             const deleted = await this.companyService.deleteOneCompany(Number(id));
     
             if (deleted) {
-                return res.status(200).json({ message: `Empresa com ID ${id} excluída com sucesso.` });
+                res.status(200).json({ message: `Empresa com ID ${id} excluída com sucesso.` });
+                return;
             } else {
-                return res.status(404).json({ message: `Empresa com ID ${id} não encontrada.` });
+                res.status(404).json({ message: `Empresa com ID ${id} não encontrada.` });
+                return;
             }
 
         } catch (error: any) {
