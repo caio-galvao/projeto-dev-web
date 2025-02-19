@@ -1,5 +1,6 @@
-import { Model, DataTypes, Optional } from 'sequelize';
+import { Model, DataTypes, Optional, ForeignKey } from 'sequelize';
 import sequelize from '../config/database';
+import { User } from './User';
 
 interface CompanyAttributes {
     id: number;
@@ -31,6 +32,13 @@ Company.init(
         },
         manager_id: {
             type: DataTypes.STRING(14),
+            allowNull: false,
+            references: {
+                model: User,
+                key: 'id',
+            },
+            onUpdate: 'CASCADE',
+            onDelete: 'SET NULL',
         },
         location: {
             type: DataTypes.STRING,
@@ -43,3 +51,6 @@ Company.init(
         timestamps: false,
     }
 );
+
+Company.belongsTo(User, { foreignKey: 'manager_id', as: 'manager' });
+User.hasMany(Company, { foreignKey: 'manager_id', as: 'managedCompanies' });
