@@ -13,8 +13,8 @@ interface UserCreationAttributes extends UserAttributes {}
 export class User extends Model<UserAttributes, UserCreationAttributes> implements UserAttributes {
     public id!: string;
     public name!: string;
-    public type!: string;
     public password!: string;
+    public type!: string;
 }
 // Inicialize o modelo com os campos no banco
 User.init(
@@ -26,7 +26,6 @@ User.init(
         name: {
             type: DataTypes.STRING,
             allowNull: false,
-            unique: true,
         },
         password: {
             type: DataTypes.STRING,
