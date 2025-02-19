@@ -6,7 +6,8 @@ export class UserRepository {
         try {
             const existingUser = await User.findOne({ where: { id } });
             if (existingUser) {
-                throw new Error("Um usuário com este CPF já existe.");
+                // throw new Error("Um usuário com este CPF já existe.");
+                return null;
             }
             const user = await User.create({
                 id,
@@ -38,7 +39,7 @@ export class UserRepository {
         try {
             const user = await User.findByPk(id);
             if (!user) {
-                throw new Error(`Usuário com CPF ${id} não encontrado.`);
+                return null;
             }
             return user;
         } catch (error: any) {
@@ -51,7 +52,7 @@ export class UserRepository {
         try {
             const user = await this.getUserById(id);
             if (!user) {
-                throw new Error(`Usuário com CPF ${id} não encontrado.`);
+                return null;
             }
             await user.update(updatedData);
             return user;
@@ -65,10 +66,11 @@ export class UserRepository {
         try {
             const user = await this.getUserById(id);
             if (!user) {
+                return null;
                 throw new Error(`Usuário com CPF ${id} não encontrado.`);
             }
             await user.destroy();
-            return true;
+            return user;
         } catch (error: any) {
             throw new Error(`Erro ao excluir usuário com CPF ${id}: ${error.message}`);
         }

@@ -22,6 +22,7 @@ User.init(
         id: {
             type: DataTypes.STRING(14),
             primaryKey: true,
+            unique: true,
         },
         name: {
             type: DataTypes.STRING,
