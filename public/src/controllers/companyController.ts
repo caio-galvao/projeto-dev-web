@@ -1,7 +1,7 @@
 import { CompanyService } from "../services/companyService";
 import { Request, Response } from "express"
 
-export class UserController {
+export class CompanyController {
     private companyService: CompanyService;
 
     constructor() {
@@ -64,14 +64,14 @@ export class UserController {
     async editOneCompany(req: Request, res: Response): Promise<void> {
         try {
             const { id } = req.params;
-            const { name, password, type } = req.body;
+            const { name, manager_id, location } = req.body;
 
-            if (!id || !name || !password || !type) {
+            if (!id || !name || !manager_id || !manager_id) {
                 res.status(400).json({ message: "Dados inválidos. Todos os campos são obrigatórios." });
                 return
             }
     
-            const company = await this.companyService.editOneCompany(Number(id), name, password, type);
+            const company = await this.companyService.editOneCompany(Number(id), name, manager_id, location);
 
             if(!company) {
                 res.status(404).json({ message: "Empresa não encontrada." });
@@ -105,4 +105,4 @@ export class UserController {
     
 }
 
-export default new UserController();
+export default new CompanyController();
