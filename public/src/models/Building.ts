@@ -5,7 +5,7 @@ import { Company } from './Company';
 interface BuildingAttributes {
     id: number;
     name: string;
-    company_id: string
+    company_id: number
 }
 
 interface BuildingCreationAttributes extends BuildingAttributes {}
@@ -13,7 +13,7 @@ interface BuildingCreationAttributes extends BuildingAttributes {}
 export class Building extends Model<BuildingAttributes, BuildingCreationAttributes> implements BuildingAttributes {
     public id!: number;
     public name!: string;
-    public company_id!: string;
+    public company_id!: number;
 }
 // Inicialize o modelo com os campos no banco
 Building.init(
