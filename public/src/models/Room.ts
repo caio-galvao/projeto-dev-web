@@ -8,8 +8,8 @@ interface RoomAttributes {
     building_id: number;
     manager_id: string;
     name: string;
-    hours_of_operation: string;
-    configuration: string;
+    schedule: string;
+    workspace_config: string;
     equipments: Array<string>;
 }
 
@@ -17,11 +17,11 @@ interface RoomCreationAttributes extends RoomAttributes {}
 
 export class Room extends Model<RoomAttributes, RoomCreationAttributes> implements RoomAttributes {
     public id!: number;
-    building_id!: number;
+    public building_id!: number;
     public name!: string;
     public manager_id!: string;
-    public hours_of_operation!: string;
-    public configuration!: string;
+    public schedule!: string;
+    public workspace_config!: string;
     public equipments!: Array<string>;
 }
 // Inicialize o modelo com os campos no banco
@@ -55,11 +55,11 @@ Room.init(
             onUpdate: 'CASCADE',
             onDelete: 'SET NULL',
         },
-        hours_of_operation: {
+        schedule: {
             type: DataTypes.STRING,
             allowNull: false,
         },
-        configuration: {
+        workspace_config: {
             type: DataTypes.STRING,
             allowNull: false,
         },

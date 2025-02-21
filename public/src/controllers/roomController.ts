@@ -12,14 +12,14 @@ export class RoomController {
 
     async createRoom(req: Request, res: Response): Promise<void> {
         try {
-            const { id, name, room_id, manager_id } = req.body;
+            const { id, building_id, manager_id, name, schedule, workspace_config, equipments } = req.body;
 
-            if (!id || !name || !room_id || !manager_id) {
+            if (!id || !building_id || !manager_id || !name || !schedule || !workspace_config || !equipments) {
                 res.status(400).json({ message: "Dados inválidos. Todos os campos são obrigatórios." });
                 return
             }
     
-            const room = await this.roomService.createRoom(id, name, room_id, manager_id);
+            const room = await this.roomService.createRoom(id, building_id, manager_id, name, schedule, workspace_config, equipments );
 
             if(!room) {
                 res.status(409).json({ message: "Uma sala com este nome já existe." });

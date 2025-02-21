@@ -7,9 +7,9 @@ export class RoomService {
     constructor() {
         this.roomRepository = new RoomRepository();
     }
-
-    async createRoom(id: number, building_id: number, name: string, manager_id: string): Promise<Room | null> {
-        return this.roomRepository.createRoom(id, building_id, name, manager_id)
+ 
+    async createRoom(id: number, building_id: number, manager_id: string, name: string, schedule: string, workspace_config: string, equipments: Array<string>): Promise<Room | null> {
+        return this.roomRepository.createRoom(id, building_id, manager_id, name, schedule, workspace_config, equipments)
     }
 
     // async getRoomsByCompany(company_id: number): Promise<Room[] | null> {
