@@ -3,9 +3,9 @@ import { Reserve } from "../models/Reserve";
 
 export class RoomRepository {
     // Criar uma nova sala
-    async createRoom(id: number, name: string, manager_id: string, location: string) {
+    async createRoom(id: number, building_id: number, name: string, manager_id: string) {
         try {
-            const existingRoom = await Room.findOne({ where: { name } });
+            const existingRoom = await Room.findOne({ where: { name } }) 
             if (existingRoom) {
                 throw new Error("Uma sala com este nome já existe.");
             }
@@ -16,9 +16,9 @@ export class RoomRepository {
 
             const room = await Room.create({
                 id,
+                building_id,
                 name,
                 manager_id,
-                location,
                 hours_of_operation,
                 configuration,
                 equipments
