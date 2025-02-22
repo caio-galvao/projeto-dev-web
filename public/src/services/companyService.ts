@@ -12,6 +12,11 @@ export class CompanyService {
     }
 
     async createCompany( name: string, manager_id: string, location: string): Promise<Company | null> {
+        const manager = await this.userService.getOneUser(manager_id)
+        if (!manager) {
+            throw new Error(`Id do gerente inválido`);
+        }
+        
         return this.companyRepository.createCompany( name, manager_id, location)
     }
 
