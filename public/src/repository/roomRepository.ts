@@ -10,8 +10,6 @@ export class RoomRepository {
                 throw new Error("Uma sala com este nome já existe.");
             }
 
-            //const equipments: string[] = [];
-
             const room = await Room.create({
                 id,
                 building_id,

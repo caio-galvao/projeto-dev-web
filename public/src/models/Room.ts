@@ -18,8 +18,8 @@ interface RoomCreationAttributes extends RoomAttributes {}
 export class Room extends Model<RoomAttributes, RoomCreationAttributes> implements RoomAttributes {
     public id!: number;
     public building_id!: number;
-    public name!: string;
     public manager_id!: string;
+    public name!: string;
     public schedule!: string;
     public workspace_config!: string;
     public equipments!: Array<string>;
@@ -36,24 +36,24 @@ Room.init(
             type: DataTypes.INTEGER,
             references: {
                 model: Building,
-                key: 'id',
+                key: 'id'
             },
             onUpdate: 'CASCADE',
-            onDelete: 'SET NULL',
-        },
-        name: {
-            type: DataTypes.STRING,
-            allowNull: false,
-            unique: true,
+            onDelete: 'CASCADE'
         },
         manager_id: {
             type: DataTypes.STRING(14),
             references: {
                 model: User,
-                key: 'id',
+                key: 'id'
             },
             onUpdate: 'CASCADE',
-            onDelete: 'SET NULL',
+            onDelete: 'SET NULL'
+        },
+        name: {
+            type: DataTypes.STRING,
+            allowNull: false,
+            unique: true,
         },
         schedule: {
             type: DataTypes.STRING,
@@ -76,7 +76,9 @@ Room.init(
 );
 
 Room.belongsTo(User, { foreignKey: 'user_id', as: 'manager' });
-User.hasMany(Room, { foreignKey: 'user_id', as: 'userRooms' });
+User.hasMany(Room, { foreignKey: 'user_id', as: 'managerRoom' });
 
 Room.belongsTo(Building, { foreignKey: 'building_id', as: 'infra' });
-Building.hasMany(Room, { foreignKey: 'building_id', as: 'userBuildings' });
+Building.hasMany(Room, { foreignKey: 'building_id', as: 'buildingsRoom' });
+
+
