@@ -10,8 +10,7 @@ interface UserAttributes {
 
 interface UserCreationAttributes extends UserAttributes {}
 
-export class User extends Model<UserAttributes, UserCreationAttributes> implements
-UserAttributes {
+export class User extends Model<UserAttributes, UserCreationAttributes> implements UserAttributes {
     public id!: string;
     public name!: string;
     public password!: string;
@@ -21,8 +20,9 @@ UserAttributes {
 User.init(
     {
         id: {
-            type: DataTypes.STRING(11),
+            type: DataTypes.STRING(14),
             primaryKey: true,
+            unique: true,
         },
         name: {
             type: DataTypes.STRING,
@@ -35,7 +35,6 @@ User.init(
         type: {
             type: DataTypes.STRING,
             allowNull: false,
-            unique: true,
         },
         },
         {
