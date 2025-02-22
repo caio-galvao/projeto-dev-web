@@ -6,7 +6,7 @@ export class BuildingRepository {
         try {
             const existingBuilding = await Building.findOne({ where: { name } });
             if (existingBuilding) {
-                throw new Error("Um prédio com este nome já existe.");
+                return null;
             }
             const building = await Building.create({ name, company_id });
             return building;
@@ -33,7 +33,7 @@ export class BuildingRepository {
         try {
             const building = await Building.findByPk(id);
             if (!building) {
-                throw new Error(`Prédio com ID ${id} não encontrada.`);
+                return null;
             }
             return building;
         } catch (error: any) {
@@ -45,7 +45,7 @@ export class BuildingRepository {
         try {
             const building = await this.getBuildingById(id);
             if (!building) {
-                throw new Error(`Prédio com ID ${id} não encontrada.`);
+                return null;
             }
             await building.update(updatedData);
             return building;
@@ -58,7 +58,7 @@ export class BuildingRepository {
         try {
             const building = await this.getBuildingById(id);
             if (!building) {
-                throw new Error(`Prédio com ID ${id} não encontrada.`);
+                return false;
             }
             await building.destroy();
             return true;
