@@ -10,6 +10,7 @@ interface BuildingAttributes {
 
 interface BuildingCreationAttributes extends Optional<BuildingAttributes, "id"> {}
 
+
 export class Building extends Model<BuildingAttributes, BuildingCreationAttributes> implements BuildingAttributes {
     public id!: number;
     public name!: string;

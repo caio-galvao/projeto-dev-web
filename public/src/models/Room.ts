@@ -1,13 +1,15 @@
 import { Model, DataTypes, Optional } from 'sequelize';
 import sequelize from '../config/database';
+import { Building } from './Building'
+import { User } from './User'
 
 interface RoomAttributes {
     id: number;
+    building_id: number;
     manager_id: string;
     name: string;
-    hours_of_operation: string;
-    location: string;
-    configuration: string;
+    scheduler: string;
+    workspace_config: string;
     equipments: Array<string>;
 }
 
@@ -15,11 +17,11 @@ interface RoomCreationAttributes extends RoomAttributes {}
 
 export class Room extends Model<RoomAttributes, RoomCreationAttributes> implements RoomAttributes {
     public id!: number;
-    public name!: string;
+    public building_id!: number;
     public manager_id!: string;
-    public location!: string;
-    public hours_of_operation!: string;
-    public configuration!: string;
+    public name!: string;
+    public scheduler!: string;
+    public workspace_config!: string;
     public equipments!: Array<string>;
 }
 // Inicialize o modelo com os campos no banco
@@ -30,22 +32,33 @@ Room.init(
             autoIncrement: true,
             primaryKey: true,
         },
+        building_id: {
+            type: DataTypes.INTEGER,
+            references: {
+                model: Building,
+                key: 'id'
+            },
+            onUpdate: 'CASCADE',
+            onDelete: 'CASCADE'
+        },
+        manager_id: {
+            type: DataTypes.STRING(14),
+            references: {
+                model: User,
+                key: 'id'
+            },
+            onUpdate: 'CASCADE',
+            onDelete: 'SET NULL'
+        },
         name: {
             type: DataTypes.STRING,
             allowNull: false,
             unique: true,
         },
-        manager_id: {
-            type: DataTypes.STRING(14),
-        },
-        location: {
-            type: DataTypes.STRING,
-            allowNull: false,
-        },
-        hours_of_operation: {
+        scheduler: {
             type: DataTypes.STRING,
         },
-        configuration: {
+        workspace_config: {
             type: DataTypes.STRING,
         },
         equipments: {
@@ -58,3 +71,11 @@ Room.init(
         timestamps: false,
     }
 );
+
+Room.belongsTo(User, { foreignKey: 'user_id', as: 'manager' });
+User.hasMany(Room, { foreignKey: 'user_id', as: 'managerRoom' });
+
+Room.belongsTo(Building, { foreignKey: 'building_id', as: 'infra' });
+Building.hasMany(Room, { foreignKey: 'building_id', as: 'userBuildings' });
+
+

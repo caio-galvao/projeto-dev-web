@@ -1,5 +1,6 @@
 import { Model, DataTypes, Optional } from 'sequelize';
 import sequelize from '../config/database';
+import { Room } from "./Room";
 
 interface WorkspaceAttributes {
     id: number;
@@ -24,6 +25,10 @@ Workspace.init(
         },
         room_id: {
             type: DataTypes.INTEGER,
+            references: {
+                model: Room,
+                key: 'id'
+            }
         },
         equipments: {
             type: DataTypes.ARRAY(DataTypes.STRING),
@@ -35,3 +40,6 @@ Workspace.init(
         timestamps: false,
     }
 );
+
+Workspace.belongsTo(Room, { foreignKey: 'room_id', as: 'infra' });
+Room.hasMany(Workspace, { foreignKey: 'room_id', as: 'roomWorkspace' });
