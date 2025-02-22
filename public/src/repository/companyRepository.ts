@@ -2,13 +2,13 @@ import { Company } from "../models/Company";
 
 export class CompanyRepository {
     // Criar uma nova empresa
-    async createCompany(id: number, name: string, manager_id: string, location: string) {
+    async createCompany( name: string, manager_id: string, location: string) {
         try {
             const existingCompany = await Company.findOne({ where: { name } });
             if (existingCompany) {
-                throw new Error("Uma empresa com este nome já existe.");
+                return null;
             }
-            const company = await Company.create({ id, name, manager_id, location });
+            const company = await Company.create({ name, manager_id, location });
             return company;
         } catch (error: any) {
             throw new Error(`Erro ao criar empresa: ${error.message}`);
@@ -33,7 +33,7 @@ export class CompanyRepository {
         try {
             const company = await Company.findByPk(id);
             if (!company) {
-                throw new Error(`Empresa com ID ${id} não encontrada.`);
+                return null;
             }
             return company;
         } catch (error: any) {
@@ -46,7 +46,7 @@ export class CompanyRepository {
         try {
             const company = await this.getCompanyById(id);
             if (!company) {
-                throw new Error(`Empresa com ID ${id} não encontrada.`);
+                return null;
             }
             await company.update(updatedData);
             return company;
@@ -60,7 +60,7 @@ export class CompanyRepository {
         try {
             const company = await this.getCompanyById(id);
             if (!company) {
-                throw new Error(`Empresa com ID ${id} não encontrada.`);
+                return false;
             }
             await company.destroy();
             return true;
