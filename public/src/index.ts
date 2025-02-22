@@ -2,6 +2,7 @@ import express from "express";
 import * as dotenv from "dotenv";
 import sequelize from "./config/database";
 import { userRoutes } from "./routes/userRoutes";
+import { companyRoutes } from "./routes/companyRoutes";
 
     console.log("🚀 Servidor rodando...");
 
@@ -10,7 +11,9 @@ import { userRoutes } from "./routes/userRoutes";
     const app = express();
     app.use(express.json());
 
-app.use("/users", userRoutes); 
+    app.use("/users", userRoutes); 
+    app.use("/company", companyRoutes); 
+
 
     // Testando a conexão e inicializando o servidor
     sequelize.sync({ force: true }).then(() => {
