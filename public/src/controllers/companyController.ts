@@ -26,7 +26,11 @@ export class CompanyController {
 
             res.status(201).json(company);
         } catch (error: any) {
-            res.status(500).json({ message: "Erro ao criar a empresa", error: error.message });
+            if (error.message === 'Id do gerente inválido') {
+                res.status(400).json({message: error.message})
+            } else {
+                res.status(500).json({ message: "Erro ao criar a empresa", error: error.message });
+            }
     }
     };
         
