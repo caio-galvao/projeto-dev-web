@@ -17,14 +17,14 @@ export class CompanyController {
                 return
             }
     
-            const user = await this.companyService.createCompany( name, manager_id, location);
+            const company = await this.companyService.createCompany( name, manager_id, location);
 
-            if(!user) {
+            if(!company) {
                 res.status(409).json({ message: "Uma empresa com este ID já existe." });
                 return;
             }
 
-            res.status(201).json(user);
+            res.status(201).json(company);
         } catch (error: any) {
             res.status(500).json({ message: "Erro ao criar a empresa", error: error.message });
     }
