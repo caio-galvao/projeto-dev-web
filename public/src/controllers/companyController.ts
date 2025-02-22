@@ -10,14 +10,14 @@ export class CompanyController {
 
     async createCompany(req: Request, res: Response): Promise<void> {
         try {
-            const { id, name, manager_id, location } = req.body;
+            const { name, manager_id, location } = req.body;
 
-            if (!id || !name || !manager_id || !location) {
+            if ( !name || !manager_id || !location) {
                 res.status(400).json({ message: "Dados inválidos. Todos os campos são obrigatórios." });
                 return
             }
     
-            const user = await this.companyService.createCompany(id, name, manager_id, location);
+            const user = await this.companyService.createCompany( name, manager_id, location);
 
             if(!user) {
                 res.status(409).json({ message: "Uma empresa com este ID já existe." });

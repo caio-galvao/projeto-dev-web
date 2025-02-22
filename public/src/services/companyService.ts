@@ -8,8 +8,8 @@ export class CompanyService {
         this.companyRepository = new CompanyRepository();
     }
 
-    async createCompany(id: number, name: string, manager_id: string, location: string): Promise<Company | null> {
-        return this.companyRepository.createCompany(id, name, manager_id, location)
+    async createCompany( name: string, manager_id: string, location: string): Promise<Company | null> {
+        return this.companyRepository.createCompany( name, manager_id, location)
     }
 
     async getAllCompanies(): Promise<Company[] | null> {

@@ -2,13 +2,13 @@ import { Company } from "../models/Company";
 
 export class CompanyRepository {
     // Criar uma nova empresa
-    async createCompany(id: number, name: string, manager_id: string, location: string) {
+    async createCompany( name: string, manager_id: string, location: string) {
         try {
             const existingCompany = await Company.findOne({ where: { name } });
             if (existingCompany) {
                 throw new Error("Uma empresa com este nome já existe.");
             }
-            const company = await Company.create({ id, name, manager_id, location });
+            const company = await Company.create({ name, manager_id, location });
             return company;
         } catch (error: any) {
             throw new Error(`Erro ao criar empresa: ${error.message}`);
