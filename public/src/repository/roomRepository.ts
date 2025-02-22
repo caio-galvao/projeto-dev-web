@@ -1,5 +1,6 @@
 import { Room } from "../models/Room";
-import { Reserve } from "../models/Reserve";
+// import { UserRooms } from "../models/UserRooms";
+// import { User } from "../models/User";
 
 export class RoomRepository {
     // Criar uma nova sala
@@ -7,6 +8,7 @@ export class RoomRepository {
         try {
             const existingRoom = await Room.findOne({ where: { name } }) 
             if (existingRoom) {
+                return null;
                 throw new Error("Uma sala com este nome já existe.");
             }
 
@@ -25,25 +27,36 @@ export class RoomRepository {
         }
     }
 
-    // Obter todas as salas
-    async getAllRooms() {
+    async getRoomsByBuilding(building_id: number) {
         try {
-            const rooms = await Room.findAll();
+            const rooms = await Room.findAll({ where: { building_id } });
             if (rooms.length === 0) {
-                return null; // Nenhuma sala registrada
+                return null;
             }
             return rooms;
         } catch (error: any) {
-            throw new Error(`Erro ao listar salas: ${error.message}`);
+            throw new Error(`Erro ao listar salas do prédio com ID ${building_id}: ${error.message}`);
         }
     }
 
-    // Obter uma sala pelo ID
+    async getRoomsByManager(manager_id: string) {
+        try {
+            const rooms = await Room.findAll({ where: { manager_id } });
+            if (rooms.length === 0) {
+                return null;
+            }
+            return rooms;
+        } catch (error: any) {
+            throw new Error(`Erro ao listar salas do prédio com ID ${manager_id}: ${error.message}`);
+        }
+    }
+
     async getRoomById(id: number) {
         try {
             const room = await Room.findByPk(id);
             if (!room) {
-                throw new Error(`Sala com ID ${id} não encontrada.`);
+                // throw new Error(`Sala com ID ${id} não encontrada.`);
+                return null;
             }
             return room;
         } catch (error: any) {
@@ -52,11 +65,11 @@ export class RoomRepository {
     }
 
     // Atualizar uma sala
-    async updateRoom(id: number, updatedData: Partial<{ name: string; manager_id: string; location: string }>) {
+    async updateRoom(id: number, updatedData: Partial<{ building_id: number, manager_id: string, name: string, schedule: string, workspace_config: string, equipments: string[] }>) {
         try {
             const room = await this.getRoomById(id);
             if (!room) {
-                throw new Error(`Sala com ID ${id} não encontrada.`);
+                return null;
             }
             await room.update(updatedData);
             return room;
@@ -70,7 +83,7 @@ export class RoomRepository {
         try {
             const room = await this.getRoomById(id);
             if (!room) {
-                throw new Error(`Sala com ID ${id} não encontrada.`);
+                return false;
             }
             await room.destroy();
             return true;
@@ -78,4 +91,17 @@ export class RoomRepository {
             throw new Error(`Erro ao excluir sala com ID ${id}: ${error.message}`);
         }
     }
+
+    // async getUsersByRoom(id: number): Promise<User[] | null> {
+    //     try {
+    //         const users = await UserRooms.findAll({ where: { roomId : id }, include: [User] });
+    //         if (users.length === 0) {
+    //             return null;
+    //         }
+    //         return users.map(users => users.get('User') as User);
+    //     } catch (error: any) {
+    //         throw new Error(`Erro ao listar usuários da sala com ID ${id}: ${error.message}`);
+    //     }
+    // }
+
 }

@@ -1,5 +1,6 @@
 import { Model, DataTypes, Optional } from 'sequelize';
 import sequelize from '../config/database';
+// import { Room } from './Room';
 
 interface UserAttributes {
     id: string;
@@ -43,3 +44,6 @@ User.init(
         timestamps: false,
     }
 );
+
+// User.belongsToMany(Room, { through: "UserRooms" });
+// Room.belongsToMany(User, { through: "UserRooms" });

@@ -13,14 +13,12 @@ export class RoomController {
     async createRoom(req: Request, res: Response): Promise<void> {
         try {
             const { id, building_id, manager_id, name, schedule, workspace_config, equipments } = req.body;
-
             if (!id || !building_id || !manager_id || !name || !schedule || !workspace_config || !equipments) {
                 res.status(400).json({ message: "Dados inválidos. Todos os campos são obrigatórios." });
-                return
+                return;
             }
     
             const room = await this.roomService.createRoom(id, building_id, manager_id, name, schedule, workspace_config, equipments );
-
             if(!room) {
                 res.status(409).json({ message: "Uma sala com este nome já existe." });
                 return;
@@ -28,82 +26,135 @@ export class RoomController {
 
             res.status(201).json(room);
         } catch (error: any) {
-            res.status(500).json({ message: "Erro ao criar o prédio", error: error.message });
+            res.status(500).json({ message: "Erro ao criar a sala", error: error.message });
     }
     };
+
+    //app.get("/building/:building_id", (req, res) =>
         
-    // async getRoomByCompany(req: Request, res: Response): Promise<void> {
-    //     try {
-    //         const { company_id } = req.params;
-    //         const rooms = await this.roomService.getRoomsByCompany(Number(company_id));
+    async getRoomsByBuilding(req: Request, res: Response): Promise<void> {
+        try {
+            const { building_id } = req.params;
+            const rooms = await this.roomService.getRoomsByBuilding(Number(building_id));
 
-    //         if (!rooms) {
-    //             res.status(204).json({ message: "Não há prédios resgistradas" });
-    //             return;
-    //         }
+            if (isNaN(Number(building_id))) {
+                res.status(400).json({ error: "O ID do prédio deve ser um número." });
+                return 
+            }
 
-    //         res.json(rooms);
-    //     } catch (error: any) {
-    //         res.status(500).json({ message: "Erro ao obter os prédios", error: error.message });
-    //     }
-    // };
+            if (!rooms) {
+                res.status(204).json({ message: "Não há salas resgistradas" });
+                return;
+            }
+
+            res.json(rooms);
+        } catch (error: any) {
+            res.status(500).json({ message: "Erro ao obter as salas", error: error.message });
+        }
+    };
+
+    // app.get("/user/:manager_id", (req, res) =>
+    // TODO
+    async getRoomsByManager(req: Request, res: Response): Promise<void> {
+        try {
+            const { manager_id } = req.params;
+            const rooms = await this.roomService.getRoomsByManager(manager_id);
+
+            if (!rooms) {
+                res.status(204).json({ message: "Não há salas resgistradas para este gerente" });
+                return;
+            }
+
+            res.json(rooms);
+        } catch (error: any) {
+            res.status(500).json({ message: "Erro ao obter as salas", error: error.message });
+        }
+    };
+
+    //app.get("/:id", (req, res) =>
         
-    // async getOneRoom(req: Request, res: Response): Promise<void> {
-    //     try {
-    //         const { id } = req.params; 
-    //         const room = await this.roomService.getOneRoom(Number(id));
-    
-    //         if (!room) {
-    //             res.status(404).json({ message: "Prédio não encontrado" });
-    //             return;
-    //         }
-    
-    //         res.json(room);
-    //     } catch (error: any) {
-    //         res.status(500).json({ message: "Erro ao obter o prédio", error: error.message });
-    //     }
-    // }
+    async getOneRoom(req: Request, res: Response): Promise<void> {
+        try {
+            const { id } = req.params;
+            const rooms = await this.roomService.getOneRoom(Number(id));
 
-    // async editOneRoom(req: Request, res: Response): Promise<void> {
+            if (isNaN(Number(id))) {
+                res.status(400).json({ error: "O ID da sala deve ser um número" });
+                return 
+            }
+
+            if (!rooms) {
+                res.status(404).json({ message: `Sala com ID ${id} não encontrada`});
+                return;
+            }
+
+            res.json(rooms);
+        } catch (error: any) {
+            res.status(500).json({ message: "Erro ao obter a sala", error: error.message });
+        }
+    };
+
+    //app.put("/:id", (req, res) =>
+
+    async editOneRoom(req: Request, res: Response): Promise<void> {
+        try {
+            const { id } = req.params;
+            const { building_id, manager_id, name, schedule, workspace_config, equipments } = req.body;
+
+            if (!building_id || !manager_id || !name || !schedule || !workspace_config || !equipments ) {
+                res.status(400).json({ message: "Dados inválidos. Todos os campos são obrigatórios" });
+                return
+            }
+    
+            const room = await this.roomService.editOneRoom(Number(id), building_id, manager_id, name, schedule, workspace_config, equipments);
+
+            if(!room) {
+                res.status(404).json({ message: `Sala com ID ${id} não encontrada` });
+                return;
+            }
+
+            res.status(201).json(room);
+        } catch (error: any) {
+            res.status(500).json({ message: "Erro ao editar a sala", error: error.message });
+    }
+    };
+    
+    //app.delete("/:id", (req, res) =>
+    
+    async deleteOneRoom(req: Request, res: Response): Promise<void> {
+        try {
+            const { id } = req.params; 
+            const deleted = await this.roomService.deleteOneRoom(Number(id));
+    
+            if (deleted) {
+                res.status(204).json({ message: `Sala com ID ${id} excluída com sucesso.` });
+                return;
+            } else {
+                res.status(404).json({ message: `Sala com ID ${id} não encontrada.` });
+                return;
+            }
+
+        } catch (error: any) {
+            res.status(500).json({ message: "Erro ao remover o prédio", error: error.message });
+        }
+    }
+    
+    //app.get("/:id/user", (req, res
+    // async getUsersByRoom(req: Request, res: Response): Promise<void> {
     //     try {
     //         const { id } = req.params;
-    //         const { name, company_id } = req.body;
+    //         const users = await this.roomService.getUsersByRoom(Number(id));
 
-    //         if (!id || !name || !company_id ) {
-    //             res.status(400).json({ message: "Dados inválidos. Todos os campos são obrigatórios." });
-    //             return
-    //         }
-    
-    //         const room = await this.roomService.editOneRoom(Number(id), name, company_id);
-
-    //         if(!room) {
-    //             res.status(404).json({ message: "Prédio não encontrado." });
+    //         if (!users) {
+    //             res.status(204).json({ message:  `Não há Usuários resgistradas para a sala com ID  ${id}` });
     //             return;
     //         }
 
-    //         res.status(201).json(room);
+    //         res.json(users);
     //     } catch (error: any) {
-    //         res.status(500).json({ message: "Erro ao editar o prédio", error: error.message });
-    // }
-    // };
-        
-    // async deleteOneRoom(req: Request, res: Response): Promise<void> {
-    //     try {
-    //         const { id } = req.params; 
-    //         const deleted = await this.roomService.deleteOneRoom(Number(id));
-    
-    //         if (deleted) {
-    //             res.status(200).json({ message: `Prédio com ID ${id} excluído com sucesso.` });
-    //             return;
-    //         } else {
-    //             res.status(404).json({ message: `Prédio com ID ${id} não encontrado.` });
-    //             return;
-    //         }
-
-    //     } catch (error: any) {
-    //         res.status(500).json({ message: "Erro ao remover o prédio", error: error.message });
+    //         res.status(500).json({ message: "Erro ao obter os usuários", error: error.message });
     //     }
-    // }
+    // };
 
     
 }
