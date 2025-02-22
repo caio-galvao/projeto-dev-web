@@ -90,7 +90,7 @@ export class CompanyController {
             const deleted = await this.companyService.deleteOneCompany(Number(id));
     
             if (deleted) {
-                res.status(200).json({ message: `Empresa com ID ${id} excluída com sucesso.` });
+                res.status(204).json({ message: `Empresa com ID ${id} excluída com sucesso.` });
                 return;
             } else {
                 res.status(404).json({ message: `Empresa com ID ${id} não encontrada.` });
