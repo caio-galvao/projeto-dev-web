@@ -10,14 +10,14 @@ export class BuildingController {
 
     async createBuilding(req: Request, res: Response): Promise<void> {
         try {
-            const { id, name, company_id } = req.body;
+            const {name, company_id } = req.body;
 
-            if (!id || !name || !company_id) {
+            if ( !name || !company_id) {
                 res.status(400).json({ message: "Dados inválidos. Todos os campos são obrigatórios." });
                 return
             }
     
-            const building = await this.buildingService.createBuilding(id, name, company_id);
+            const building = await this.buildingService.createBuilding(name, company_id);
 
             if(!building) {
                 res.status(409).json({ message: "Um prédio com este ID já existe." });

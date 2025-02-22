@@ -2,13 +2,13 @@ import { Building } from "../models/Building";
 
 export class BuildingRepository {
 
-    async createBuilding(id: number, name: string, company_id: number) {
+    async createBuilding( name: string, company_id: number) {
         try {
             const existingBuilding = await Building.findOne({ where: { name } });
             if (existingBuilding) {
                 throw new Error("Um prédio com este nome já existe.");
             }
-            const building = await Building.create({ id, name, company_id });
+            const building = await Building.create({ name, company_id });
             return building;
         } catch (error: any) {
             throw new Error(`Erro ao criar prédio: ${error.message}`);

@@ -8,8 +8,8 @@ export class BuildingService {
         this.buildingRepository = new BuildingRepository();
     }
 
-    async createBuilding(id: number, name: string, company_id: number): Promise<Building | null> {
-        return this.buildingRepository.createBuilding(id, name, company_id)
+    async createBuilding( name: string, company_id: number): Promise<Building | null> {
+        return this.buildingRepository.createBuilding(name, company_id)
     }
 
     async getBuildingsByCompany(company_id: number): Promise<Building[] | null> {
