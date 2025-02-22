@@ -20,7 +20,7 @@ export class CompanyController {
             const company = await this.companyService.createCompany( name, manager_id, location);
 
             if(!company) {
-                res.status(409).json({ message: "Uma empresa com este ID já existe." });
+                res.status(409).json({ message: "Uma empresa com este nome já existe." });
                 return;
             }
 
@@ -51,7 +51,7 @@ export class CompanyController {
             const company = await this.companyService.getOneCompany(Number(id));
     
             if (!company) {
-                res.status(404).json({ message: "Empresa não encontrada" });
+                res.status(404).json({ message: `Empresa com ID ${id} não encontrada.` });
                 return;
             }
     
@@ -74,13 +74,17 @@ export class CompanyController {
             const company = await this.companyService.editOneCompany(Number(id), name, manager_id, location);
 
             if(!company) {
-                res.status(404).json({ message: "Empresa não encontrada." });
+                res.status(404).json({ message: `Empresa com ID ${id} não encontrada.` });
                 return;
             }
 
             res.status(201).json(company);
         } catch (error: any) {
-            res.status(500).json({ message: "Erro ao editar a empresa", error: error.message });
+            if (error.message === 'Id do gerente inválido') {
+                res.status(400).json({message: error.message})
+            } else {
+                res.status(500).json({ message: "Erro ao editar a empresa", error: error.message });
+            }
     }
     };
         
