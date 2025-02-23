@@ -1,19 +1,19 @@
 import { Model, DataTypes, Optional } from 'sequelize';
 import sequelize from '../config/database';
-import { Building } from './Building'
-import { User } from './User'
+import { User } from './User';
+import { Building } from './Building';
 
 interface RoomAttributes {
     id: number;
     building_id: number;
     manager_id: string;
     name: string;
-    scheduler: string;
+    schedule: string;
     workspace_config: string;
     equipments: Array<string>;
 }
 
-interface RoomCreationAttributes extends RoomAttributes {}
+interface RoomCreationAttributes extends Optional<RoomAttributes, "id"> {}
 
 export class Room extends Model<RoomAttributes, RoomCreationAttributes> implements RoomAttributes {
     public id!: number;
@@ -24,7 +24,7 @@ export class Room extends Model<RoomAttributes, RoomCreationAttributes> implemen
     public workspace_config!: string;
     public equipments!: Array<string>;
 }
-// Inicialize o modelo com os campos no banco
+
 Room.init(
     {
         id: {
@@ -55,14 +55,17 @@ Room.init(
             allowNull: false,
             unique: true,
         },
-        scheduler: {
+        schedule: {
             type: DataTypes.STRING,
+            allowNull: false,
         },
         workspace_config: {
             type: DataTypes.STRING,
+            allowNull: false,
         },
         equipments: {
             type: DataTypes.ARRAY(DataTypes.STRING),
+            allowNull: false,
         },
         },
         {
@@ -76,6 +79,4 @@ Room.belongsTo(User, { foreignKey: 'user_id', as: 'manager' });
 User.hasMany(Room, { foreignKey: 'user_id', as: 'managerRoom' });
 
 Room.belongsTo(Building, { foreignKey: 'building_id', as: 'infra' });
-Building.hasMany(Room, { foreignKey: 'building_id', as: 'userBuildings' });
-
-
+Building.hasMany(Room, { foreignKey: 'building_id', as: 'buildingsRoom' });

@@ -70,7 +70,7 @@ export class CompanyController {
             const { id } = req.params;
             const { name, manager_id, location } = req.body;
 
-            if (!id || !name || !manager_id || !manager_id) {
+            if (!id || !name || !manager_id || !location) {
                 res.status(400).json({ message: "Dados inválidos. Todos os campos são obrigatórios." });
                 return
             }

@@ -4,6 +4,7 @@ import sequelize from "./config/database";
 import { userRoutes } from "./routes/userRoutes";
 import { companyRoutes } from "./routes/companyRoutes";
 import { buildingRoutes } from "./routes/buildingRoutes";
+import { roomRoutes } from "./routes/roomRoutes";
 
 
     console.log("🚀 Servidor rodando...");
@@ -15,7 +16,8 @@ import { buildingRoutes } from "./routes/buildingRoutes";
 
     app.use("/users", userRoutes); 
     app.use("/company", companyRoutes);
-    app.use("/building", buildingRoutes);  
+    app.use("/building", buildingRoutes);
+    app.use("/room", roomRoutes);  
 
 
     // Testando a conexão e inicializando o servidor
