@@ -13,7 +13,7 @@ interface RoomAttributes {
     equipments: Array<string>;
 }
 
-interface RoomCreationAttributes extends RoomAttributes {}
+interface RoomCreationAttributes extends Optional<RoomAttributes, "id"> {}
 
 export class Room extends Model<RoomAttributes, RoomCreationAttributes> implements RoomAttributes {
     public id!: number;
