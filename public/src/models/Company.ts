@@ -9,7 +9,7 @@ interface CompanyAttributes {
     location: string;
 }
 
-interface CompanyCreationAttributes extends CompanyAttributes {}
+interface CompanyCreationAttributes extends Optional<CompanyAttributes, "id"> {}
 
 export class Company extends Model<CompanyAttributes, CompanyCreationAttributes> implements CompanyAttributes {
     public id!: number;
