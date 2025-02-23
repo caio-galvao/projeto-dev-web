@@ -8,7 +8,7 @@ interface BuildingAttributes {
     company_id: number
 }
 
-interface BuildingCreationAttributes extends BuildingAttributes {}
+interface BuildingCreationAttributes extends Optional<BuildingAttributes, "id"> {}
 
 export class Building extends Model<BuildingAttributes, BuildingCreationAttributes> implements BuildingAttributes {
     public id!: number;
@@ -36,7 +36,7 @@ Building.init(
                 key: 'id',
             },
             onUpdate: 'CASCADE',
-            onDelete: 'SET NULL',
+            onDelete: 'CASCADE',
         },
         },
         {

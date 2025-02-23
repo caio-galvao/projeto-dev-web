@@ -3,6 +3,8 @@ import * as dotenv from "dotenv";
 import sequelize from "./config/database";
 import { userRoutes } from "./routes/userRoutes";
 import { companyRoutes } from "./routes/companyRoutes";
+import { buildingRoutes } from "./routes/buildingRoutes";
+
 
     console.log("🚀 Servidor rodando...");
 
@@ -12,7 +14,8 @@ import { companyRoutes } from "./routes/companyRoutes";
     app.use(express.json());
 
     app.use("/users", userRoutes); 
-    app.use("/company", companyRoutes); 
+    app.use("/company", companyRoutes);
+    app.use("/building", buildingRoutes);  
 
 
     // Testando a conexão e inicializando o servidor
