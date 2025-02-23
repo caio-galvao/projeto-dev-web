@@ -20,11 +20,11 @@ export class Room extends Model<RoomAttributes, RoomCreationAttributes> implemen
     public building_id!: number;
     public manager_id!: string;
     public name!: string;
-    public schedule!: string;
+    public scheduler!: string;
     public workspace_config!: string;
     public equipments!: Array<string>;
 }
-// Inicialize o modelo com os campos no banco
+
 Room.init(
     {
         id: {
@@ -80,5 +80,3 @@ User.hasMany(Room, { foreignKey: 'user_id', as: 'managerRoom' });
 
 Room.belongsTo(Building, { foreignKey: 'building_id', as: 'infra' });
 Building.hasMany(Room, { foreignKey: 'building_id', as: 'buildingsRoom' });
-
-

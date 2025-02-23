@@ -1,15 +1,23 @@
 import { CompanyRepository } from "../repository/companyRepository";
 import { Company } from "../models/Company"
+import { UserService } from "./userService";
 
 export class CompanyService {
     private companyRepository: CompanyRepository;
+    private userService: UserService;
 
     constructor() {
         this.companyRepository = new CompanyRepository();
+        this.userService = new UserService();
     }
 
-    async createCompany(id: number, name: string, manager_id: string, location: string): Promise<Company | null> {
-        return this.companyRepository.createCompany(id, name, manager_id, location)
+    async createCompany( name: string, manager_id: string, location: string): Promise<Company | null> {
+        const manager = await this.userService.getOneUser(manager_id)
+        if (!manager) {
+            throw new Error(`Id do gerente inválido`);
+        }
+        
+        return this.companyRepository.createCompany( name, manager_id, location)
     }
 
     async getAllCompanies(): Promise<Company[] | null> {
@@ -23,6 +31,11 @@ export class CompanyService {
     }
 
     async editOneCompany(id: number, name: string, manager_id: string, location: string): Promise<Company | null> {
+        const manager = await this.userService.getOneUser(manager_id)
+        if (!manager) {
+            throw new Error(`Id do gerente inválido`);
+        }
+
         return this.companyRepository.updateCompany(id, { name, manager_id, location })
     }
 

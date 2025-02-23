@@ -3,7 +3,6 @@ import { Building } from "../models/Building";
 import { User } from "../models/User";
 
 export class RoomRepository {
-    // Criar uma nova sala
     async createRoom(building_id: number, manager_id: string, name: string, schedule: string, workspace_config: string, equipments: Array<string>) {
         try {
             const existingRoom = await Room.findOne({ where: { name } }) 
@@ -63,7 +62,6 @@ export class RoomRepository {
         }
     }
 
-    // Atualizar uma sala
     async updateRoom(id: number, updatedData: Partial<{ building_id: number, manager_id: string, name: string, schedule: string, workspace_config: string, equipments: string[] }>) {
         try {
             const room = await this.getRoomById(id);
@@ -77,7 +75,6 @@ export class RoomRepository {
         }
     }
 
-    // Excluir uma sala
     async deleteRoom(id: number) {
         try {
             const room = await this.getRoomById(id);
