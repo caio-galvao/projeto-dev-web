@@ -11,6 +11,15 @@ export class WorkspaceService {
         this.roomService = new RoomService();
     }
 
+    async createWorkspace( room_id: number, position: number, equipments: Array<string>): Promise<Workspace | null> {
+        const room = await this.roomService.getOneRoom(room_id)
+        if (!room) {
+            throw new Error(`Id da sala inválido`);
+        }
+
+        return this.workspaceRepository.createWorkspace(room_id, position, equipments)
+    }
+
     async getWorkspacesByRoom(room_id: number): Promise<Workspace[] | null> {
         const room = await this.roomService.getOneRoom(room_id)
         if (!room) {

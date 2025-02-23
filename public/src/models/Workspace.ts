@@ -9,7 +9,7 @@ interface WorkspaceAttributes {
     equipments: Array<string>;
 }
 
-interface WorkspaceCreationAttributes extends WorkspaceAttributes {}
+interface WorkspaceCreationAttributes extends Optional<WorkspaceAttributes, "id"> {}
 
 export class Workspace extends Model<WorkspaceAttributes, WorkspaceCreationAttributes> implements WorkspaceAttributes {
     public id!: number;

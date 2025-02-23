@@ -3,7 +3,6 @@ import RoomController from "../controllers/roomController";
 
 export const roomRoutes = Router();
 
-
 roomRoutes.post("/", (req, res) => RoomController.createRoom(req, res));
 
 roomRoutes.get("/building/:building_id", (req, res) => RoomController.getRoomsByBuilding(req, res));

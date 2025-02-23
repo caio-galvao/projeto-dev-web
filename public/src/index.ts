@@ -7,7 +7,6 @@ import { buildingRoutes } from "./routes/buildingRoutes";
 import { roomRoutes } from "./routes/roomRoutes";
 import { workspaceRoutes } from "./routes/workspaceRoutes";
 
-
     console.log("🚀 Servidor rodando...");
 
     dotenv.config();

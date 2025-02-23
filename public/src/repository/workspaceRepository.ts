@@ -9,6 +9,15 @@ export class WorkspaceRepository {
         });
     }
 
+    async createWorkspace( room_id: number, position: number, equipments: Array<string>) {
+        try {
+            const workspace = await Workspace.create({ room_id, position, equipments });
+            return workspace;
+        } catch (error: any) {
+            throw new Error(`Erro ao criar espaço de trabalho: ${error.message}`);
+        }
+    }
+
     async getWorkspacesByRoom(room_id: number) {
         try {
             const workspaces = await Workspace.findAll({
