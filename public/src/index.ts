@@ -6,6 +6,7 @@ import { companyRoutes } from "./routes/companyRoutes";
 import { buildingRoutes } from "./routes/buildingRoutes";
 import { roomRoutes } from "./routes/roomRoutes";
 import { workspaceRoutes } from "./routes/workspaceRoutes";
+import { reserveRoutes } from "./routes/reserveRoutes";
 
     console.log("🚀 Servidor rodando...");
 
@@ -18,7 +19,8 @@ import { workspaceRoutes } from "./routes/workspaceRoutes";
     app.use("/company", companyRoutes);
     app.use("/building", buildingRoutes);
     app.use("/room", roomRoutes);
-    app.use("/workspace", workspaceRoutes);    
+    app.use("/workspace", workspaceRoutes);
+    app.use("/reserve", reserveRoutes);    
 
 
     // Testando a conexão e inicializando o servidor
