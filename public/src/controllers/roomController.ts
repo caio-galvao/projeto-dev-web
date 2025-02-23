@@ -12,13 +12,14 @@ export class RoomController {
 
     async createRoom(req: Request, res: Response): Promise<void> {
         try {
-            const { id, building_id, manager_id, name, schedule, workspace_config, equipments } = req.body;
-            if (!id || !building_id || !manager_id || !name || !schedule || !workspace_config || !equipments) {
+            const { building_id, manager_id, name, schedule, workspace_config, equipments } = req.body;
+            if (!building_id || !manager_id || !name || !schedule || !workspace_config || !equipments) {
                 res.status(400).json({ message: "Dados inválidos. Todos os campos são obrigatórios." });
                 return;
             }
     
-            const room = await this.roomService.createRoom(id, building_id, manager_id, name, schedule, workspace_config, equipments );
+            const room = await this.roomService.createRoom(building_id, manager_id, name, schedule, workspace_config, equipments );
+
             if(!room) {
                 res.status(409).json({ message: "Uma sala com este nome já existe." });
                 return;
@@ -26,6 +27,16 @@ export class RoomController {
 
             res.status(201).json(room);
         } catch (error: any) {
+
+            if (error.message === "Id do prédio não encontrado") {
+                res.status(404).json({ message: error.message });
+                return;
+            }
+            if (error.message === "Id do gerente não encontrado") {
+                res.status(404).json({ message: error.message });
+                return;
+            }
+
             res.status(500).json({ message: "Erro ao criar a sala", error: error.message });
     }
     };
@@ -43,7 +54,13 @@ export class RoomController {
             }
 
             if (!rooms) {
-                res.status(204).json({ message: "Não há salas resgistradas" });
+
+                res.status(404).json({ message: "Prédio não encontrado" });
+                return;
+            }
+            if (rooms.length === 0) {
+                res.status(204).json({ message: "Não há salas resgistradas" }); 
+
                 return;
             }
 
@@ -61,6 +78,10 @@ export class RoomController {
             const rooms = await this.roomService.getRoomsByManager(manager_id);
 
             if (!rooms) {
+                res.status(404).json({ message: "Gerente não encontrado" });
+                return;
+            }
+            if (rooms.length === 0) {
                 res.status(204).json({ message: "Não há salas resgistradas para este gerente" });
                 return;
             }
@@ -115,6 +136,14 @@ export class RoomController {
 
             res.status(201).json(room);
         } catch (error: any) {
+            if (error.message === "Id do prédio não encontrado") {
+                res.status(404).json({ message: error.message });
+                return;
+            }
+            if (error.message === "Id do gerente não encontrado") {
+                res.status(404).json({ message: error.message });
+                return;
+            }
             res.status(500).json({ message: "Erro ao editar a sala", error: error.message });
     }
     };
@@ -138,25 +167,6 @@ export class RoomController {
             res.status(500).json({ message: "Erro ao remover o prédio", error: error.message });
         }
     }
-    
-    //app.get("/:id/user", (req, res
-    // async getUsersByRoom(req: Request, res: Response): Promise<void> {
-    //     try {
-    //         const { id } = req.params;
-    //         const users = await this.roomService.getUsersByRoom(Number(id));
-
-    //         if (!users) {
-    //             res.status(204).json({ message:  `Não há Usuários resgistradas para a sala com ID  ${id}` });
-    //             return;
-    //         }
-
-    //         res.json(users);
-    //     } catch (error: any) {
-    //         res.status(500).json({ message: "Erro ao obter os usuários", error: error.message });
-    //     }
-    // };
-
-    
 }
 
 export default new RoomController();

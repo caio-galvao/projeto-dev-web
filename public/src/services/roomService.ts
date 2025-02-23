@@ -1,29 +1,31 @@
 import { RoomRepository } from "../repository/roomRepository";
+import { BuildingService } from "./buildingService";
+import { UserService } from "./userService";
+
 import { Room } from "../models/Room"
-import { User } from "../models/User"
-import { WorkspaceRepository } from "../repository/workspaceRepository";
 
 export class RoomService {
     private roomRepository: RoomRepository;
-    private workspaceRepository: WorkspaceRepository
+    private buildingService: BuildingService;
+    private userService: UserService;
 
     constructor() {
         this.roomRepository = new RoomRepository();
-        this.workspaceRepository = new WorkspaceRepository();
+        this.buildingService = new BuildingService();
+        this.userService = new UserService();
+
     }
  
-    async createRoom(id: number, building_id: number, manager_id: string, name: string, schedule: string, workspace_config: string, equipments: Array<string>): Promise<Room | null> {
-        const room = await this.roomRepository.createRoom(id, building_id, manager_id, name, schedule, workspace_config, equipments)
-        
-        const workspaces_by_row = workspace_config.split(',').map(pair => pair.split(':')[1]);
-        const num_workspaces = workspaces_by_row.map(Number).reduce((accumulator, currentValue) => accumulator + currentValue, 0);        
-
-        var i: number = 0
-        for (i; i < num_workspaces; i++) {
-            this.workspaceRepository.createWorkspace(id, i+1, []);
+    async createRoom(building_id: number, manager_id: string, name: string, schedule: string, workspace_config: string, equipments: Array<string>): Promise<Room | null> {
+        const building = await this.buildingService.getOneBuilding(building_id);
+        if (!building) {
+            throw new Error("Id do prédio não encontrado");
         }
-        
-        return room
+        const manager = await this.userService.getOneUser(manager_id);
+        if (!manager) {
+            throw new Error("Id do gerente não encontrado");
+        }
+        return this.roomRepository.createRoom(building_id, manager_id, name, schedule, workspace_config, equipments)
     }
 
     async getRoomsByBuilding(building_id: number): Promise<Room[] | null> {
@@ -42,14 +44,18 @@ export class RoomService {
     }
 
     async editOneRoom(id: number, building_id: number, manager_id: string, name: string, schedule: string, workspace_config: string, equipments: string[]): Promise<Room | null> {
+        const building = await this.buildingService.getOneBuilding(building_id);
+        if (!building) {
+            throw new Error("Id do prédio não encontrado");
+        }
+        const manager = await this.userService.getOneUser(manager_id);
+        if (!manager) {
+            throw new Error("Id do gerente não encontrado");
+        }
         return this.roomRepository.updateRoom(id, { building_id, manager_id, name, schedule, workspace_config, equipments })
     }
 
     async deleteOneRoom(id: number): Promise<boolean> {
         return this.roomRepository.deleteRoom(id)
     }
-
-    // async getUsersByRoom(id: number): Promise<User[] | null> {
-    //     return this.roomRepository.getUsersByRoom(id)
-    // }
 }

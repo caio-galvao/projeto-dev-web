@@ -13,7 +13,7 @@ interface RoomAttributes {
     equipments: Array<string>;
 }
 
-interface RoomCreationAttributes extends RoomAttributes {}
+interface RoomCreationAttributes extends Optional<RoomAttributes, "id"> {}
 
 export class Room extends Model<RoomAttributes, RoomCreationAttributes> implements RoomAttributes {
     public id!: number;
@@ -24,7 +24,7 @@ export class Room extends Model<RoomAttributes, RoomCreationAttributes> implemen
     public workspace_config!: string;
     public equipments!: Array<string>;
 }
-// Inicialize o modelo com os campos no banco
+
 Room.init(
     {
         id: {
@@ -80,5 +80,3 @@ User.hasMany(Room, { foreignKey: 'user_id', as: 'managerRoom' });
 
 Room.belongsTo(Building, { foreignKey: 'building_id', as: 'infra' });
 Building.hasMany(Room, { foreignKey: 'building_id', as: 'buildingsRoom' });
-
-
