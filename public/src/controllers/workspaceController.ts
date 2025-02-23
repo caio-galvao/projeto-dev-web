@@ -54,7 +54,7 @@ export class WorkspaceController {
                 return
             }
     
-            const workspace = await this.workspaceService.editOneWorkspace(Number(id), room_id, position, equipments);
+            const workspace = await this.workspaceService.editOneWorkspace(Number(id), Number(room_id), position, equipments);
 
             if(!workspace) {
                 res.status(404).json({ message: `Espaço de trabalho com ID ${id} não encontrado.` });

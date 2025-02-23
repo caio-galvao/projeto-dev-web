@@ -1,13 +1,6 @@
 import { Workspace } from "../models/Workspace";
 
 export class WorkspaceRepository {
-    // Obter reservas em um workspace
-    async getReservesByWorkspace(id: number, room_id: number) {
-        return await Workspace.findOne({
-            where: { id: id, room_id },
-            include: ["reserves"],
-        });
-    }
 
     async createWorkspace( room_id: number, position: number, equipments: Array<string>) {
         try {
