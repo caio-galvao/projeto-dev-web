@@ -20,7 +20,7 @@ export class Room extends Model<RoomAttributes, RoomCreationAttributes> implemen
     public building_id!: number;
     public manager_id!: string;
     public name!: string;
-    public scheduler!: string;
+    public schedule!: string;
     public workspace_config!: string;
     public equipments!: Array<string>;
 }
