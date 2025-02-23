@@ -15,5 +15,3 @@ roomRoutes.get("/:id", (req, res) => RoomController.getOneRoom(req, res));
 roomRoutes.put("/:id", (req, res) => RoomController.editOneRoom(req, res));
 
 roomRoutes.delete("/:id", (req, res) => RoomController.deleteOneRoom(req, res));
-
-// roomRoutes.get("/:id/user", (req, res) => RoomController.getUsersByRoom(req, res));

@@ -1,6 +1,5 @@
 import { RoomRepository } from "../repository/roomRepository";
 import { Room } from "../models/Room"
-import { User } from "../models/User"
 
 export class RoomService {
     private roomRepository: RoomRepository;
@@ -35,8 +34,4 @@ export class RoomService {
     async deleteOneRoom(id: number): Promise<boolean> {
         return this.roomRepository.deleteRoom(id)
     }
-
-    // async getUsersByRoom(id: number): Promise<User[] | null> {
-    //     return this.roomRepository.getUsersByRoom(id)
-    // }
 }

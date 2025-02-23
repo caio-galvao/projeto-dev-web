@@ -138,25 +138,6 @@ export class RoomController {
             res.status(500).json({ message: "Erro ao remover o prédio", error: error.message });
         }
     }
-    
-    //app.get("/:id/user", (req, res
-    // async getUsersByRoom(req: Request, res: Response): Promise<void> {
-    //     try {
-    //         const { id } = req.params;
-    //         const users = await this.roomService.getUsersByRoom(Number(id));
-
-    //         if (!users) {
-    //             res.status(204).json({ message:  `Não há Usuários resgistradas para a sala com ID  ${id}` });
-    //             return;
-    //         }
-
-    //         res.json(users);
-    //     } catch (error: any) {
-    //         res.status(500).json({ message: "Erro ao obter os usuários", error: error.message });
-    //     }
-    // };
-
-    
 }
 
 export default new RoomController();
