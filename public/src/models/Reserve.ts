@@ -50,7 +50,7 @@ Reserve.init(
         },
         {
         sequelize,
-        tableName: "companies",
+        tableName: "reserves",
         timestamps: false,
     }
 );

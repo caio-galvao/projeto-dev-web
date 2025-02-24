@@ -48,7 +48,7 @@ export class ReserveController {
 
             res.json(reserves);
         } catch (error: any) {
-            if (error.message.startsWith('Espaco de trabalho com ID ')) {
+            if (error.message.startsWith('Espaço de trabalho com ID')) {
                 res.status(404).json({message: error.message})
             } else {
                 res.status(500).json({ message: "Erro ao obter as reservas", error: error.message });
