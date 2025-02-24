@@ -5,14 +5,16 @@ import { Room } from "./Room";
 interface WorkspaceAttributes {
     id: number;
     room_id: number;
+    position: number;
     equipments: Array<string>;
 }
 
-interface WorkspaceCreationAttributes extends WorkspaceAttributes {}
+interface WorkspaceCreationAttributes extends Optional<WorkspaceAttributes, "id"> {}
 
 export class Workspace extends Model<WorkspaceAttributes, WorkspaceCreationAttributes> implements WorkspaceAttributes {
     public id!: number;
     public room_id!: number;
+    public position!: number;
     public equipments!: Array<string>;
 }
 // Inicialize o modelo com os campos no banco
@@ -28,7 +30,12 @@ Workspace.init(
             references: {
                 model: Room,
                 key: 'id'
-            }
+            },
+            onUpdate: 'CASCADE',
+            onDelete: 'CASCADE',
+        },
+        position: {
+            type: DataTypes.INTEGER
         },
         equipments: {
             type: DataTypes.ARRAY(DataTypes.STRING),

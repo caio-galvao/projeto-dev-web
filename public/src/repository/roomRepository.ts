@@ -87,4 +87,17 @@ export class RoomRepository {
             throw new Error(`Erro ao excluir sala com ID ${id}: ${error.message}`);
         }
     }
+
+    // async getUsersByRoom(id: number): Promise<User[] | null> {
+    //     try {
+    //         const users = await UserRooms.findAll({ where: { roomId : id }, include: [User] });
+    //         if (users.length === 0) {
+    //             return null;
+    //         }
+    //         return users.map(users => users.get('User') as User);
+    //     } catch (error: any) {
+    //         throw new Error(`Erro ao listar usuários da sala com ID ${id}: ${error.message}`);
+    //     }
+    // }
+
 }

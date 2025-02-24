@@ -19,6 +19,7 @@ export class RoomController {
             }
     
             const room = await this.roomService.createRoom(building_id, manager_id, name, schedule, workspace_config, equipments );
+
             if(!room) {
                 res.status(409).json({ message: "Uma sala com este nome já existe." });
                 return;
@@ -26,6 +27,7 @@ export class RoomController {
 
             res.status(201).json(room);
         } catch (error: any) {
+
             if (error.message === "Id do prédio não encontrado") {
                 res.status(404).json({ message: error.message });
                 return;
@@ -34,6 +36,7 @@ export class RoomController {
                 res.status(404).json({ message: error.message });
                 return;
             }
+
             res.status(500).json({ message: "Erro ao criar a sala", error: error.message });
     }
     };
@@ -51,11 +54,13 @@ export class RoomController {
             }
 
             if (!rooms) {
+
                 res.status(404).json({ message: "Prédio não encontrado" });
                 return;
             }
             if (rooms.length === 0) {
                 res.status(204).json({ message: "Não há salas resgistradas" }); 
+
                 return;
             }
 
