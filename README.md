@@ -45,3 +45,7 @@ Com a configuração concluída e o banco de dados executando, execute o backend
 ```
 npm run dev
 ```
+
+## Modelo Entidade-Relacionamento (MER)
+
+![Modelo Entidade-Relacionamento](assets/sentai_modelagem.webp)
