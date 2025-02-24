@@ -48,4 +48,4 @@ npm run dev
 
 ## Modelo Entidade-Relacionamento (MER)
 
-![Modelo Entidade-Relacionamento](assets/sentai_modelagem.jpg)
+![Modelo Entidade-Relacionamento](assets/sentaai_modelagem.jpg)
