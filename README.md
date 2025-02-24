@@ -17,3 +17,31 @@ Para iniciar o servidor:
 ```
 npm start
 ```
+
+## Backend
+
+Para executar o backend, inicialmente configure o ambiente:
+
+```
+npm init -y
+npm install express dotenv pg mysql2 sequelize
+npm install --save-dev typescript ts-node @types/node @types/express
+@types/dotenv
+```
+
+O projeto utiliza banco de dados postgresql, então é preciso instalar e configurar, criando um usuário e um banco de dados. Com o postgresql, crie um arquivo .env no diretório base do projeto com as seguintes informações de acesso:
+
+```
+DB_DIALECT=postgres # ou mysql
+DB_HOST=localhost
+DB_PORT=5432 # 3306 para MySQL
+DB_USER=db_user
+DB_PASS=db_password
+DB_NAME=db_name
+```
+
+Com a configuração concluída e o banco de dados executando, execute o backend com:
+
+```
+npm run dev
+```
