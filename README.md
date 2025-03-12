@@ -25,8 +25,9 @@ Para executar o backend, inicialmente configure o ambiente:
 ```
 npm init -y
 npm install express dotenv pg mysql2 sequelize
-npm install --save-dev typescript ts-node @types/node @types/express
-@types/dotenv
+npm install bcryptjs jsonwebtoken
+npm install --save-dev typescript ts-node @types/node @types/express @types/dotenv
+npm install --save-dev @types/bcryptjs @types/jsonwebtoken
 ```
 
 O projeto utiliza banco de dados postgresql, então é preciso instalar e configurar, criando um usuário e um banco de dados. Com o postgresql, crie um arquivo .env no diretório base do projeto com as seguintes informações de acesso:
@@ -38,6 +39,7 @@ DB_PORT=5432 # 3306 para MySQL
 DB_USER=db_user
 DB_PASS=db_password
 DB_NAME=db_name
+JWT_SECRET=jwt_secret_key
 ```
 
 Com a configuração concluída e o banco de dados executando, execute o backend com:
