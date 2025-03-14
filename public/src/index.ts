@@ -24,11 +24,6 @@ import authRoutes from './routes/authRoutes';
     app.use("/room", roomRoutes);
     app.use("/workspace", workspaceRoutes);
     app.use("/reserve", reserveRoutes);  
-    
-    app.get('/protected', authenticate, (req, res) => {
-        res.status(200).json({ message: 'You have access to this protected route' });
-    });
-
 
     // Testando a conexão e inicializando o servidor
     sequelize.sync({ force: true }).then(() => {

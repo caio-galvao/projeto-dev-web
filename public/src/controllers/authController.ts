@@ -10,7 +10,7 @@ export const login = async (req: Request, res: Response): Promise<void> => {
         const user = await User.findOne({ where: { name: username } });
         
         if (!user) {
-            res.status(400).json({ message: 'Invalid username' });
+            res.status(400).json({ message: 'Invalid username or password' });
             return;
         }
 
