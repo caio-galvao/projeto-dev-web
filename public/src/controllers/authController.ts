@@ -3,21 +3,21 @@ import { comparePassword, generateToken } from '../utils/auth';
 import { User } from '../models/User';
 
 export const login = async (req: Request, res: Response): Promise<void> => {
-    const { username, password } = req.body;
+    const { cpf, password } = req.body;
     
     try {
         // Verifica se o usuário existe
-        const user = await User.findOne({ where: { name: username } });
+        const user = await User.findOne({ where: { id: cpf } });
         
         if (!user) {
-            res.status(400).json({ message: 'Invalid username or password' });
+            res.status(400).json({ message: 'Invalid cpf or password' });
             return;
         }
 
         // Compara a senha fornecida com a senha armazenada
         const isPasswordValid = await comparePassword(password, user.password);
         if (!isPasswordValid) {
-            res.status(400).json({ message: 'Invalid username or password' });
+            res.status(400).json({ message: 'Invalid cpf or password' });
             return;
         }
 
