@@ -1,5 +1,6 @@
 import { UserRepository } from "../repository/userRepository";
 import { User } from "../models/User"
+import {UserDTO} from "../dto/userDTO"
 import { hashPassword } from "../utils/auth"
 
 export class UserService {
@@ -9,26 +10,31 @@ export class UserService {
         this.userRepository = new UserRepository();
     }
 
-    async createUser(id: string, name: string, password: string, type: string): Promise<User | null> {
+    async createUser(id: string, name: string, password: string, type: string): Promise<UserDTO | null> {
         const hashedPassword = await hashPassword(password)
-        return this.userRepository.createUser(id, name, hashedPassword, type)
+        const user = await this.userRepository.createUser(id, name, hashedPassword, type)
+        return new UserDTO(user);
     }
 
-    async getAllUsers(): Promise<User[] | null> {
+    async getAllUsers(): Promise<UserDTO[] | null> {
         const users = await this.userRepository.getAllUsers();
-        return users;
+        if (!users) return null;
+    
+        return users.map(user => new UserDTO(user));
     }
-
-    async getOneUser(id: string): Promise<User | null > {
+    
+    async getOneUser(id: string): Promise<UserDTO | null > {
         const user = await this.userRepository.getUserById(id);
-        return user;
+        return new UserDTO(user);
     }
 
-    async editOneUser(id: string, name: string, password: string, type: string): Promise<User | null> {
-        return this.userRepository.updateUser(id, { name, password, type })
+    async editOneUser(id: string, name: string, password: string, type: string): Promise<UserDTO | null> {
+        const user = await this.userRepository.updateUser(id, { name, password, type })
+        return new UserDTO(user);
     }
 
-    async deleteOneUser(id: string): Promise<User | null> {
-        return this.userRepository.deleteUser(id)
+    async deleteOneUser(id: string): Promise<UserDTO | null> {
+        const user = await this.userRepository.deleteUser(id)
+        return new UserDTO(user);
     }
 }
