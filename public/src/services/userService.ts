@@ -1,5 +1,6 @@
 import { UserRepository } from "../repository/userRepository";
 import { User } from "../models/User"
+import { hashPassword } from "../utils/auth"
 
 export class UserService {
     private userRepository: UserRepository;
@@ -9,7 +10,8 @@ export class UserService {
     }
 
     async createUser(id: string, name: string, password: string, type: string): Promise<User | null> {
-        return this.userRepository.createUser(id, name, password, type)
+        const hashedPassword = await hashPassword(password)
+        return this.userRepository.createUser(id, name, hashedPassword, type)
     }
 
     async getAllUsers(): Promise<User[] | null> {
