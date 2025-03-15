@@ -1,11 +1,11 @@
 import { Router } from "express";
-import { authenticate } from '../middlewares/authMiddleware';
+import { authenticate, authorize } from '../middlewares/authMiddleware';
 import  UserController from "../controllers/userController";
 
 export const userRoutes = Router();
 
 
-userRoutes.get("/", authenticate, (req, res) => UserController.getAllUsers(req, res));
+userRoutes.get("/", authenticate, authorize(['ultra']), (req, res) => UserController.getAllUsers(req, res));
 
 userRoutes.post("/", (req, res) => UserController.createUser(req, res));
 
