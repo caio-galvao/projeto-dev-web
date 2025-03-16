@@ -18,12 +18,27 @@ export const authenticate = (req: Request, res: Response, next: NextFunction): v
     }
 };
 
-export const authorize = (allowedRoles: string[]) => {
-    return (req: Request, res: Response, next: NextFunction): void => {
+export const authorize = (
+    allowedRoles: string[], 
+    condition?: (req: Request, user: any) => Promise<boolean> | boolean) => {
+    return async (req: Request, res: Response, next: NextFunction): Promise<void> => {
         const user = (req as any).user;
         if (!user || !allowedRoles.includes(user.role)) {
             res.status(403).json({ message: 'Access denied. Insufficient permissions.' });
             return;
+        }
+        if (condition) {
+            try {
+                const allowed = await Promise.resolve(condition(req, user));
+                if (!allowed) {
+                    res.status(403).json({ message: 'Access denied. Attribute check failed.' });
+                    return;
+                }
+            } catch (error) {
+                console.error('ABAC check error:', error);
+                res.status(500).json({ message: 'Internal Server Error during attribute check.' });
+                return;
+            }
         }
         next();
     };
