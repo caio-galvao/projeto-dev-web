@@ -11,6 +11,22 @@ userRoutes.post("/", (req, res) => UserController.createUser(req, res));
 
 userRoutes.get("/:id", authenticate, (req, res) => UserController.getOneUser(req, res));
 
-userRoutes.put("/:id", authenticate, (req, res) => UserController.editOneUser(req, res));
+userRoutes.put("/:id", 
+    authenticate, 
+    authorize(["comum", "admin", "master", "ultra"], async (req, user) => {
+        if (user.role != "ultra") {
+            return req.params.id === user.id;
+        }
+        return true;
+    }),
+    (req, res) => UserController.editOneUser(req, res));
 
-userRoutes.delete("/:id", authenticate, (req, res) => UserController.deleteOneUser(req, res));
+userRoutes.delete("/:id",
+    authenticate,
+    authorize(["comum", "admin", "master", "ultra"], async (req, user) => {
+        if (user.role != "ultra") {
+            return req.params.id === user.id;
+        }
+        return true;
+    }),
+    (req, res) => UserController.deleteOneUser(req, res));
