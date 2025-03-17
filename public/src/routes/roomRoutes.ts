@@ -2,12 +2,27 @@ import { Router } from "express";
 import { authenticate, authorize } from '../middlewares/authMiddleware';
 import RoomController from "../controllers/roomController";
 import { RoomService } from "../services/roomService";
+import { BuildingService } from "../services/buildingService";
+import { CompanyService } from "../services/companyService";
 
 export const roomRoutes = Router();
 const roomService = new RoomService();
+const buildingService = new BuildingService();
+const companyService = new CompanyService();
 
 
-roomRoutes.post("/", authenticate, authorize(['master', 'ultra']), (req, res) => RoomController.createRoom(req, res));
+roomRoutes.post("/", 
+    authenticate, 
+    authorize(['master', 'ultra'], async (req, user) => {
+        if (user.role === "master") {
+            const { building_id } = req.body;
+            const building = await buildingService.getOneBuilding(Number(building_id))
+            const company = await companyService.getOneCompany(Number(building?.company_id))
+            return company ? company.manager_id === user.id : false;
+        };
+        return true
+    }),
+    (req, res) => RoomController.createRoom(req, res));
 
 roomRoutes.get("/building/:building_id", authorize(['admin', 'master', 'ultra']), authenticate, (req, res) => RoomController.getRoomsByBuilding(req, res));
 
@@ -20,13 +35,28 @@ roomRoutes.put("/:id",
     authorize(["admin", "master", "ultra"], async (req, user) => {
         if (user.role === "admin") {
             const room = await roomService.getOneRoom(Number(req.params.id));
-            return room ? room.manager_id === user.id : false; // Ensure the admin is the manager
+            return room ? room.manager_id === user.id : false;
         }
-        return true; // "master" and "ultra" roles are allowed without additional checks
+        if (user.role === "master") {
+            const room = await roomService.getOneRoom(Number(req.params.id));
+            const building = await buildingService.getOneBuilding(Number(room?.building_id))
+            const company = await companyService.getOneCompany(Number(building?.company_id))
+            return company ? company.manager_id === user.id : false;
+        };
+        return true;
     }),
     (req, res) => RoomController.editOneRoom(req, res)
 );
 
-roomRoutes.put("/:id", authenticate, authorize(['admin', 'master', 'ultra']), (req, res) => RoomController.editOneRoom(req, res));
-
-roomRoutes.delete("/:id", authenticate, authorize(['master', 'ultra']), (req, res) => RoomController.deleteOneRoom(req, res));
+roomRoutes.delete("/:id", 
+    authenticate, 
+    authorize(['master', 'ultra'], async (req, user) => {
+        if (user.role === "master") {
+            const room = await roomService.getOneRoom(Number(req.params.id));
+            const building = await buildingService.getOneBuilding(Number(room?.building_id))
+            const company = await companyService.getOneCompany(Number(building?.company_id))
+            return company ? company.manager_id === user.id : false;
+        };
+        return true;
+    }),
+    (req, res) => RoomController.deleteOneRoom(req, res));

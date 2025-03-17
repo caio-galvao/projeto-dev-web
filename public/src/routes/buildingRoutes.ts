@@ -9,7 +9,17 @@ const buildingService = new BuildingService();
 const companyService = new CompanyService();
 
 
-buildingRoutes.post("/", authenticate, authorize(['master', 'ultra']), (req, res) => BuildingController.createBuilding(req, res));
+buildingRoutes.post("/", 
+    authenticate, 
+    authorize(['master', 'ultra'], async (req, user) => {
+        if (user.role === "master") {
+            const { company_id } = req.body;
+            const company = await companyService.getOneCompany(Number(company_id))
+            return company ? company.manager_id === user.id : false;
+        };
+        return true
+    }),
+    (req, res) => BuildingController.createBuilding(req, res));
 
 buildingRoutes.get("/company/:company_id", authenticate, authorize(['admin', 'master', 'ultra']), (req, res) => BuildingController.getBuildingByCompany(req, res));
 
