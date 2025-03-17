@@ -20,7 +20,7 @@ export class ReserveController {
             const reserve = await this.reserveService.createReserve(user_id, workspace_id, time);
 
             if(!reserve) {
-                res.status(409).json({ message: "Uma reserva o mesmo horário e espaço de trabalho já existe." });
+                res.status(409).json({ message: "Uma reserva no mesmo horário e espaço de trabalho já existe." });
                 return;
             }
 
