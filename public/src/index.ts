@@ -7,7 +7,6 @@ import { buildingRoutes } from "./routes/buildingRoutes";
 import { roomRoutes } from "./routes/roomRoutes";
 import { workspaceRoutes } from "./routes/workspaceRoutes";
 import { reserveRoutes } from "./routes/reserveRoutes";
-import { authenticate } from './middlewares/authMiddleware';
 import authRoutes from './routes/authRoutes';
 
     console.log("🚀 Servidor rodando...");
@@ -23,7 +22,7 @@ import authRoutes from './routes/authRoutes';
     app.use("/building", buildingRoutes);
     app.use("/room", roomRoutes);
     app.use("/workspace", workspaceRoutes);
-    app.use("/reserve", reserveRoutes);  
+    app.use("/reserve", reserveRoutes);
 
     // Testando a conexão e inicializando o servidor
     sequelize.sync({ force: true }).then(() => {

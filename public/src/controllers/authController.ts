@@ -1,5 +1,5 @@
 import { Request, Response } from 'express';
-import { comparePassword, generateToken } from '../utils/auth';
+import { comparePassword, generateToken } from '../utils/authentication';
 import { User } from '../models/User';
 
 export const login = async (req: Request, res: Response): Promise<void> => {

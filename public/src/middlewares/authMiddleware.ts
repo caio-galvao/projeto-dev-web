@@ -1,5 +1,5 @@
 import { Request, Response, NextFunction } from 'express';
-import { verifyToken } from '../utils/auth';
+import { verifyToken } from '../utils/authentication';
 
 export const authenticate = (req: Request, res: Response, next: NextFunction): void => {
     const token = req.header('Authorization')?.replace('Bearer ', '');
@@ -34,9 +34,9 @@ export const authorize = (
                     res.status(403).json({ message: 'Access denied. Attribute check failed.' });
                     return;
                 }
-            } catch (error) {
-                console.error('ABAC check error:', error);
-                res.status(500).json({ message: 'Internal Server Error during attribute check.' });
+            } catch (error: any) {
+                const status = error.status || 500;
+                res.status(status).json({ message: error.message || "Internal Server Error during attribute check" });
                 return;
             }
         }
