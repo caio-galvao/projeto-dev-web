@@ -1,7 +1,7 @@
 import { UserRepository } from "../repository/userRepository";
 import { User } from "../models/User"
 import {UserDTO} from "../dto/userDTO"
-import { hashPassword } from "../utils/auth"
+import { hashPassword } from "../utils/authentication"
 
 export class UserService {
     private userRepository: UserRepository;

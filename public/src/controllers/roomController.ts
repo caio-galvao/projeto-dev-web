@@ -164,9 +164,73 @@ export class RoomController {
             }
 
         } catch (error: any) {
-            res.status(500).json({ message: "Erro ao remover o prédio", error: error.message });
+            res.status(500).json({ message: "Erro ao remover a sala", error: error.message });
         }
     }
+
+    async getUsersByRoom(req: Request, res: Response): Promise<void> {
+        try {
+            const { room_id } = req.params;
+            const users = await this.roomService.getUsersByRoom(Number(room_id));
+
+            if (!users) {
+                res.status(204).json({ message: "Não há usuários registrados nesta sala" });
+                return;
+            }
+
+            res.json(users);
+        } catch (error: any) {
+            if (error.message === "Id da sala não encontrado") {
+                res.status(404).json({ message: error.message });
+                return;
+            }
+            res.status(500).json({ message: "Erro ao obter os usuários", error: error.message });
+        }
+    };
+
+    async addUserInRoom(req: Request, res: Response): Promise<void> {
+        try {
+            const { room_id, user_id } = req.params;
+    
+            const user_room = await this.roomService.addUserInRoom(Number(room_id), user_id);
+
+            if(!user_room) {
+                res.status(409).json({ message: "O usuário já está cadastrado na sala." });
+                return;
+            }
+
+            res.status(201).json(user_room);
+        } catch (error: any) {
+            if (error.message === "Id da sala não encontrado") {
+                res.status(404).json({ message: error.message });
+                return;
+            }
+            if (error.message === "Id do usuário não encontrado") {
+                res.status(404).json({ message: error.message });
+                return;
+            }
+            res.status(500).json({ message: "Erro ao adicionar usuário em sala", error: error.message });
+    }
+    };
+
+    async deleteUserFromRoom(req: Request, res: Response): Promise<void> {
+        try {
+            const { room_id, user_id } = req.params; 
+            const deleted = await this.roomService.deleteUserFromRoom(Number(room_id), user_id);
+    
+            if (deleted) {
+                res.status(204).json({ message: `Usuário com ID ${user_id} excluído da sala com sucesso.` });
+                return;
+            } else {
+                res.status(404).json({ message: `Usuário ou sala não encontrados.` });
+                return;
+            }
+
+        } catch (error: any) {
+            res.status(500).json({ message: "Erro ao excluir usuário da sala", error: error.message });
+        }
+    };
+
 }
 
 export default new RoomController();
