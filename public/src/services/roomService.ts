@@ -6,14 +6,17 @@ import { Room } from "../models/Room"
 import { RoomUser } from "../models/RoomUser"
 import { User } from "../models/User"
 import {UserDTO} from "../dto/userDTO"
+import { WorkspaceRepository } from "../repository/workspaceRepository";
 
 export class RoomService {
     private roomRepository: RoomRepository;
     private buildingService: BuildingService;
     private userService: UserService;
+    private workspaceRepository: any;
 
     constructor() {
         this.roomRepository = new RoomRepository();
+        this.workspaceRepository = new WorkspaceRepository();
         this.buildingService = new BuildingService();
         this.userService = new UserService();
 
@@ -28,7 +31,22 @@ export class RoomService {
         if (!manager) {
             throw new Error("Id do gerente não encontrado");
         }
-        return this.roomRepository.createRoom(building_id, manager_id, name, schedule, workspace_config, equipments)
+
+        const room = await this.roomRepository.createRoom(building_id, manager_id, name, schedule, workspace_config, equipments)
+
+        if (!room) {
+            return null;
+        }
+
+        const workspaces_by_row = workspace_config.split(',').map(pair => pair.split(':')[1]);
+        const num_workspaces = workspaces_by_row.map(Number).reduce((accumulator, currentValue) => accumulator + currentValue, 0);        
+
+        var i: number = 0
+        for (i; i < num_workspaces; i++) {
+            this.workspaceRepository.createWorkspace(room.id, i+1, []);
+        }
+
+        return room;
     }
 
     async getRoomsByBuilding(building_id: number): Promise<Room[] | null> {
