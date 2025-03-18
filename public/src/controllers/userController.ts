@@ -8,8 +8,6 @@ export class UserController {
         this.userService = new UserService();
     }
 
-    //app.post("/user", async (req, res) =>
-
     async createUser(req: Request, res: Response): Promise<void> {
         try {
             const { id, name, password, type } = req.body;
@@ -36,8 +34,6 @@ export class UserController {
             res.status(500).json({ message: "Erro ao criar o usuário", error: error.message });
     }
     };
-
-    //app.get("/user", async (req, res) => 
         
     async getAllUsers(req: Request, res: Response): Promise<void> {
         try {
@@ -53,8 +49,6 @@ export class UserController {
             res.status(500).json({ message: "Erro ao obter os usuários", error: error.message });
         }
     };
-
-    //app.get("/user/{id}", async (req, res) => 
         
     async getOneUser(req: Request, res: Response): Promise<void> {
         try {
@@ -70,9 +64,7 @@ export class UserController {
         } catch (error: any) {
             res.status(500).json({ message: "Erro ao obter o usuário", error: error.message });
         }
-    }
-
-    //app.put("/user/{id}", async (req, res) =>
+    };
 
     async editOneUser(req: Request, res: Response): Promise<void> {
         try {
@@ -101,26 +93,22 @@ export class UserController {
             res.status(500).json({ message: "Erro ao editar o usuário", error: error.message });
     }
     };
-
-        //app.delete("/user/{id}", async (req, res) => 
         
-        async deleteOneUser(req: Request, res: Response): Promise<void> {
-            try {
-                const { id } = req.params; 
-                const user = await this.userService.deleteOneUser(id);
-        
-                if (!user) {
-                    res.status(404).json({ message: "Usuário não encontrado" });
-                    return;
-                }
-        
-                res.status(204).json(user);
-            } catch (error: any) {
-                res.status(500).json({ message: "Erro ao remover o usuário", error: error.message });
-            }
-        }
-
+    async deleteOneUser(req: Request, res: Response): Promise<void> {
+        try {
+            const { id } = req.params; 
+            const user = await this.userService.deleteOneUser(id);
     
+            if (!user) {
+                res.status(404).json({ message: "Usuário não encontrado" });
+                return;
+            }
+    
+            res.status(204).json(user);
+        } catch (error: any) {
+            res.status(500).json({ message: "Erro ao remover o usuário", error: error.message });
+        }
+    };
 }
 
 export default new UserController();
