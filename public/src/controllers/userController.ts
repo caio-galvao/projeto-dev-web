@@ -12,29 +12,42 @@ export class UserController {
         try {
             const { id, name, password, type } = req.body;
 
-            if (!id || !name || !password || !type) {
-                res.status(400).json({ message: "Dados inválidos. Todos os campos são obrigatórios." });
-                return
+            if (!id) {
+                res.status(400).json({ message: "O campo CPF é obrigatório." });
+                return;
             }
-    
-            if (id.length !== 14) {
-                res.status(400).json({ message: "O campo CPF deve ter exatamente 14 caracteres." });
-                return
+            if (!name) {
+                res.status(400).json({ message: "O campo nome é obrigatório." });
+                return;
             }
-    
+            if (!password) {
+                res.status(400).json({ message: "O campo senha é obrigatório." });
+                return;
+            }
+            if (!type) {
+                res.status(400).json({ message: "O campo tipo é obrigatório." });
+                return;
+            }
+
+            const cpfRegex = /^\d{3}\.\d{3}\.\d{3}\-\d{2}$/;
+            if (!cpfRegex.test(id)) {
+                res.status(400).json({ message: "O campo CPF deve estar no formato XXX.XXX.XXX-XX." });
+                return;
+            }
+
             const user = await this.userService.createUser(id, name, password, type);
 
-            if(!user) {
+            if (!user) {
                 res.status(409).json({ message: "Um usuário com este CPF já existe." });
                 return;
             }
 
-            res.status(201).json(user); // Retorna o usuário criado
+            res.status(201).json(user);
         } catch (error: any) {
             res.status(500).json({ message: "Erro ao criar o usuário", error: error.message });
-    }
+        }
     };
-        
+
     async getAllUsers(req: Request, res: Response): Promise<void> {
         try {
             const users = await this.userService.getAllUsers();
@@ -49,10 +62,22 @@ export class UserController {
             res.status(500).json({ message: "Erro ao obter os usuários", error: error.message });
         }
     };
-        
+
     async getOneUser(req: Request, res: Response): Promise<void> {
         try {
-            const { id } = req.params; 
+            const { id } = req.params;
+            
+            if (!id) {
+                res.status(400).json({ message: "O campo CPF é obrigatório." });
+                return;
+            }
+
+            const cpfRegex = /^\d{3}\.\d{3}\.\d{3}\-\d{2}$/;
+            if (!cpfRegex.test(id)) {
+                res.status(400).json({ message: "O campo CPF deve estar no formato XXX.XXX.XXX-XX." });
+                return;
+            }
+
             const user = await this.userService.getOneUser(id);
     
             if (!user) {
@@ -71,19 +96,33 @@ export class UserController {
             const { id } = req.params;
             const { name, password, type } = req.body;
 
-            if (!id || !name || !password || !type) {
-                res.status(400).json({ message: "Dados inválidos. Todos os campos são obrigatórios." });
-                return
+            if (!id) {
+                res.status(400).json({ message: "O campo CPF é obrigatório." });
+                return;
+            }          
+            
+            if (!name) {
+                res.status(400).json({ message: "O campo nome é obrigatório." });
+                return;
             }
-    
-            if (id.length !== 14) {
-                res.status(400).json({ message: "O campo CPF deve ter exatamente 14 caracteres." });
-                return
+            if (!password) {
+                res.status(400).json({ message: "O campo senha é obrigatório." });
+                return;
             }
-    
+            if (!type) {
+                res.status(400).json({ message: "O campo tipo é obrigatório." });
+                return;
+            }
+            
+            const cpfRegex = /^\d{3}\.\d{3}\.\d{3}\-\d{2}$/;
+            if (!cpfRegex.test(id)) {
+                res.status(400).json({ message: "O campo CPF deve estar no formato XXX.XXX.XXX-XX." });
+                return;
+            }
+
             const user = await this.userService.editOneUser(id, name, password, type);
 
-            if(!user) {
+            if (!user) {
                 res.status(404).json({ message: "Usuário não encontrado." });
                 return;
             }
@@ -91,12 +130,24 @@ export class UserController {
             res.status(201).json(user);
         } catch (error: any) {
             res.status(500).json({ message: "Erro ao editar o usuário", error: error.message });
-    }
+        }
     };
-        
+
     async deleteOneUser(req: Request, res: Response): Promise<void> {
         try {
             const { id } = req.params; 
+
+            if (!id) {
+                res.status(400).json({ message: "O campo CPF é obrigatório." });
+                return;
+            }  
+
+            const cpfRegex = /^\d{3}\.\d{3}\.\d{3}\-\d{2}$/;
+            if (!cpfRegex.test(id)) {
+                res.status(400).json({ message: "O campo CPF deve estar no formato XXX.XXX.XXX-XX." });
+                return;
+            }
+            
             const user = await this.userService.deleteOneUser(id);
     
             if (!user) {
