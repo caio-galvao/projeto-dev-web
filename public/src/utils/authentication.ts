@@ -1,6 +1,6 @@
-import bcrypt from 'bcryptjs';
-import jwt from 'jsonwebtoken';
-import dotenv from 'dotenv';
+import * as bcrypt from "bcryptjs";
+import * as jwt from "jsonwebtoken";
+import * as dotenv from "dotenv";
 
 dotenv.config();
 
