@@ -1,4 +1,4 @@
-import * as express from "express";
+import express = require("express");
 import * as dotenv from "dotenv";
 import sequelize from "./config/database";
 import { userRoutes } from "./routes/userRoutes";
