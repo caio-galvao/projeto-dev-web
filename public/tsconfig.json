@@ -6,8 +6,8 @@
     "outDir": "./lib",
     "strict": true,
     "esModuleInterop": true,
-    "skipLibCheck": true,
-    "types": ["node", "mocha", "chai", "chai-http"]
+    "moduleResolution": "node",
+    "skipLibCheck": true
   },
   "include": ["src", "tests"],
   "exclude": ["node_modules", "**/__tests__/*"]

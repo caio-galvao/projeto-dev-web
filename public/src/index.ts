@@ -1,4 +1,4 @@
-import express from "express";
+import * as express from "express";
 import * as dotenv from "dotenv";
 import sequelize from "./config/database";
 import { userRoutes } from "./routes/userRoutes";
@@ -26,10 +26,10 @@ app.use("/reserve", reserveRoutes);
 
 export default app;
 
-// Testando a conexão e inicializando o servidor
-sequelize.sync({ force: true }).then(() => {
+sequelize.sync({ alter: true }).then(() => {
     console.log("Banco de dados conectado!");
     app.listen(3000, () => console.log("Servidor rodando na porta 3000"));
 }).catch((error) => {
     console.error("Erro ao conectar ao banco de dados:", error);
 });
+
