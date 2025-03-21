@@ -28,6 +28,7 @@ npm install express dotenv pg mysql2 sequelize
 npm install bcryptjs jsonwebtoken
 npm install --save-dev typescript ts-node @types/node @types/express @types/dotenv
 npm install --save-dev @types/bcryptjs @types/jsonwebtoken
+npm install --save-dev jest ts-jest @types/jest supertest @types/supertest
 ```
 
 O projeto utiliza banco de dados postgresql, então é preciso instalar e configurar, criando um usuário e um banco de dados. Com o postgresql, crie um arquivo .env no diretório base do projeto com as seguintes informações de acesso:
