@@ -52,5 +52,5 @@ Company.init(
     }
 );
 
-Company.belongsTo(User, { foreignKey: 'manager_id', as: 'manager' });
-User.hasMany(Company, { foreignKey: 'manager_id', as: 'managedCompanies' });
+Company.belongsTo(User, { foreignKey: 'boss_id', as: 'boss' });
+User.hasMany(Company, { foreignKey: 'boss_id', as: 'managedCompanies' });

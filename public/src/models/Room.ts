@@ -75,8 +75,8 @@ Room.init(
     }
 );
 
-Room.belongsTo(User, { foreignKey: 'manager_id', as: 'manager' });
-User.hasMany(Room, { foreignKey: 'manager_id', as: 'managerRoom' });
+Room.belongsTo(User, { foreignKey: 'administrator_id', as: 'administrator' });
+User.hasMany(Room, { foreignKey: 'administrator_id', as: 'administratorRoom' });
 
 Room.belongsTo(Building, { foreignKey: 'building_id', as: 'infra' });
 Building.hasMany(Room, { foreignKey: 'building_id', as: 'buildingsRoom' });

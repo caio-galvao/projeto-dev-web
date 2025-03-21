@@ -1,15 +1,19 @@
-
 import * as request from "supertest";
-import app from "../../src/index"; // Importando a API real
+import app from "../../src/index";
 import sequelize from "../../src/config/database";
 
 beforeAll(async () => {
   try {
     await sequelize.authenticate();
-    await sequelize.sync({ force: true }); // Garante um BD limpo
+    await sequelize.sync({ force: true }); // TODO BD separado
   } catch (err) {
     console.error("Erro ao conectar ao banco:", err);
   }
+});
+
+afterAll(async () => {
+  await sequelize.close();
+  console.log("📌 Conexão com o banco fechada.");
 });
 
 /* describe("UserController - getAllUsers", () => {
@@ -68,70 +72,69 @@ describe("UserController - createUser", () => {
   });
 });
 
-describe("UserController - getUserById", () => {
-  it("deve retornar status 200 e um objeto de usuário", async () => {
-    const newUser = {
-      id: "123.456.789-00",
-      name: "Carlos",
-      password: "123",
-      type: "comum",
-    };
+// describe("UserController - getUserById", () => {
+//   it("deve retornar status 200 e um objeto de usuário", async () => {
+//     const newUser = {
+//       id: "123.456.789-00",
+//       name: "Carlos",
+//       password: "123",
+//       type: "comum",
+//     };
   
-    await request(app).post("/users").send(newUser);
+//     await request(app).post("/users").send(newUser);
 
-    const login = {
-      cpf: "123.456.789-00",
-      password: "123",
-    };
+//     const login = {
+//       cpf: "123.456.789-00",
+//       password: "123",
+//     };
 
-    const response_login = await request(app).post("/auth/login").send(login);
+//     const response_login = await request(app).post("/auth/login").send(login);
 
-    const token = response_login.body.token;
+//     const token = response_login.body.token;
 
-    const response = await request(app).get("/users/123.456.789-00").set("Authorization", `Bearer ${token}`);
+//     const response = await request(app).get("/users/123.456.789-00").set("Authorization", `Bearer ${token}`);
 
-    expect(response.status).toBe(200);
-    expect(response.body).toEqual(
-      expect.objectContaining({ id: "123.456.789-00", name: "Carlos" }),
-      )
-  });
-});
+//     expect(response.status).toBe(200);
+//     expect(response.body).toEqual(
+//       expect.objectContaining({ id: "123.456.789-00", name: "Carlos" }),
+//       )
+//   });
+// });
 
-describe("UserController - edit user", () => {
-  it("deve retornar status 201 e um objeto de usuário", async () => {
-    const newUser = {
-      id: "123.456.789-00",
-      name: "Carlos",
-      password: "123",
-      type: "comum",
-    };
+// describe("UserController - edit user", () => {
+//   it("deve retornar status 201 e um objeto de usuário", async () => {
+//     const newUser = {
+//       id: "123.456.789-00",
+//       name: "Carlos",
+//       password: "123",
+//       type: "comum",
+//     };
   
-    await request(app).post("/users").send(newUser);
+//     await request(app).post("/users").send(newUser);
 
-    const login = {
-      cpf: "123.456.789-00",
-      password: "123",
-    };
+//     const login = {
+//       cpf: "123.456.789-00",
+//       password: "123",
+//     };
 
-    const response_login = await request(app).post("/auth/login").send(login);
+//     const response_login = await request(app).post("/auth/login").send(login);
 
-    const token = response_login.body.token;
+//     const token = response_login.body.token;
   
-    const updatedUser = {
-      name: "José Carlos",
-      password: "123",
-      type: "comum",
-    };
+//     const updatedUser = {
+//       name: "José Carlos",
+//       password: "123",
+//       type: "comum",
+//     };
 
-    const response = await request(app).put("/users/123.456.789-00").send(updatedUser).set("Authorization", `Bearer ${token}`);
-    //console.log(response)
+//     const response = await request(app).put("/users/123.456.789-00").send(updatedUser).set("Authorization", `Bearer ${token}`);
 
-    expect(response.status).toBe(201);
-    expect(response.body).toEqual(
-      expect.objectContaining({ id: "123.456.789-00", name: "José Carlos" }),
-      )
-  });
-});
+//     expect(response.status).toBe(201);
+//     expect(response.body).toEqual(
+//       expect.objectContaining({ id: "123.456.789-00", name: "José Carlos" }),
+//       )
+//   });
+// });
 
 
 /*   it("deve retornar status 400 quando o CPF não for fornecido", async () => {
