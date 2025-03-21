@@ -19,12 +19,6 @@ beforeAll(async () => {
   });
 
   it("deve retornar status 200 e uma lista de usuários", async () => {
-    // Inserindo usuários no banco
-    await sequelize.query(`
-      INSERT INTO users (id, name, password, type)
-      VALUES ('123.456.789-00', 'João', '123', 'comum'),
-             ('987.654.321-00', 'Maria', '123', 'comum');
-    `);
 
     const response = await request(app).get("/users");
 
@@ -72,7 +66,73 @@ describe("UserController - createUser", () => {
   
     expect(response.body).toEqual(expect.objectContaining(expectedUser));
   });
-}
+});
+
+describe("UserController - getUserById", () => {
+  it("deve retornar status 200 e um objeto de usuário", async () => {
+    const newUser = {
+      id: "123.456.789-00",
+      name: "Carlos",
+      password: "123",
+      type: "comum",
+    };
+  
+    await request(app).post("/users").send(newUser);
+
+    const login = {
+      cpf: "123.456.789-00",
+      password: "123",
+    };
+
+    const response_login = await request(app).post("/auth/login").send(login);
+
+    const token = response_login.body.token;
+
+    const response = await request(app).get("/users/123.456.789-00").set("Authorization", `Bearer ${token}`);
+
+    expect(response.status).toBe(200);
+    expect(response.body).toEqual(
+      expect.objectContaining({ id: "123.456.789-00", name: "Carlos" }),
+      )
+  });
+});
+
+describe("UserController - edit user", () => {
+  it("deve retornar status 201 e um objeto de usuário", async () => {
+    const newUser = {
+      id: "123.456.789-00",
+      name: "Carlos",
+      password: "123",
+      type: "comum",
+    };
+  
+    await request(app).post("/users").send(newUser);
+
+    const login = {
+      cpf: "123.456.789-00",
+      password: "123",
+    };
+
+    const response_login = await request(app).post("/auth/login").send(login);
+
+    const token = response_login.body.token;
+  
+    const updatedUser = {
+      name: "José Carlos",
+      password: "123",
+      type: "comum",
+    };
+
+    const response = await request(app).put("/users/123.456.789-00").send(updatedUser).set("Authorization", `Bearer ${token}`);
+    //console.log(response)
+
+    expect(response.status).toBe(201);
+    expect(response.body).toEqual(
+      expect.objectContaining({ id: "123.456.789-00", name: "José Carlos" }),
+      )
+  });
+});
+
 
 /*   it("deve retornar status 400 quando o CPF não for fornecido", async () => {
     const newUser = {
@@ -167,5 +227,4 @@ describe("UserController - createUser", () => {
     console.log("📌 Conexão com o banco fechada.");
   });
 */
-);
  
