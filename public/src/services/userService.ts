@@ -13,6 +13,9 @@ export class UserService {
     async createUser(id: string, name: string, password: string, type: string): Promise<UserDTO | null> {
         const hashedPassword = await hashPassword(password)
         const user = await this.userRepository.createUser(id, name, hashedPassword, type)
+        
+        if (!user) return null;
+        
         return new UserDTO(user);
     }
 
@@ -25,16 +28,19 @@ export class UserService {
     
     async getOneUser(id: string): Promise<UserDTO | null > {
         const user = await this.userRepository.getUserById(id);
+        if (!user) return null;
         return new UserDTO(user);
     }
 
     async editOneUser(id: string, name: string, password: string, type: string): Promise<UserDTO | null> {
         const user = await this.userRepository.updateUser(id, { name, password, type })
+        if (!user) return null;
         return new UserDTO(user);
     }
 
     async deleteOneUser(id: string): Promise<UserDTO | null> {
         const user = await this.userRepository.deleteUser(id)
+        if (!user) return null;
         return new UserDTO(user);
     }
 }

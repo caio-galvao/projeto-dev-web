@@ -4,7 +4,7 @@
   "description": "O projeto da disciplina será um sistema para organização do uso de espaços de trabalho em escritórios. As principais funcionalidades são:\r 1) Reserva de locais de trabalho em salas;\r 2) Visualização da agenda para os locais de trabalho;\r 3) Visualização dos equipamentos de cada local de trabalho, como computadores e monitores;\r 4) Criação e gerência das salas, com possibilidade de adição ou remoção de membros.",
   "main": "index.js",
   "scripts": {
-    "test": "NODE_ENV=test jest --runInBand --detectOpenHandles",
+    "test": "jest --runInBand --detectOpenHandles", 
     "start": "node server.js",
     "dev": "ts-node public/src/index.ts"
   },
