@@ -67,11 +67,11 @@ export class CompanyController {
             const { id } = req.params;
 
             if (!id) {
-                res.status(400).json({ message: "O campo id da compania é obrigatório." });
+                res.status(400).json({ message: "O campo id da empresa é obrigatório." });
                 return;
             }
             if (isNaN(Number(id))) {
-                res.status(400).json({ error: "O id da compania deve ser um número" });
+                res.status(400).json({ error: "O id da empresa deve ser um número" });
                 return 
             }
             
@@ -93,11 +93,11 @@ export class CompanyController {
             const { id } = req.params;
 
             if (!id) {
-                res.status(400).json({ message: "O campo id da compania é obrigatório." });
+                res.status(400).json({ message: "O campo id da empresa é obrigatório." });
                 return;
             }
             if (isNaN(Number(id))) {
-                res.status(400).json({ error: "O id da compania deve ser um número" });
+                res.status(400).json({ error: "O id da empresa deve ser um número" });
                 return 
             }
 
@@ -147,11 +147,11 @@ export class CompanyController {
             const { id } = req.params;
 
             if (!id) {
-                res.status(400).json({ message: "O campo id da compania é obrigatório." });
+                res.status(400).json({ message: "O campo id da empresa é obrigatório." });
                 return;
             }
             if (isNaN(Number(id))) {
-                res.status(400).json({ error: "O id da compania deve ser um número" });
+                res.status(400).json({ error: "O id da empresa deve ser um número" });
                 return 
             }
 

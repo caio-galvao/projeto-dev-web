@@ -60,7 +60,7 @@ export class BuildingController {
 
             res.json(buildings);
         } catch (error: any) {
-            if (error.message.startsWith('Empresa com ID ')) {
+            if (error.message.startsWith('Empresa com id ')) {
                 res.status(404).json({ message: error.message });
             } else {
                 res.status(500).json({ message: "Erro ao obter os prédios", error: error.message });
@@ -84,7 +84,7 @@ export class BuildingController {
             const building = await this.buildingService.getOneBuilding(Number(id));
 
             if (!building) {
-                res.status(404).json({ message: `Prédio com ID ${id} não encontrado.` });
+                res.status(404).json({ message: `Prédio com id ${id} não encontrado.` });
                 return;
             }
 
@@ -119,7 +119,7 @@ export class BuildingController {
             const building = await this.buildingService.editOneBuilding(Number(id), name, company_id);
 
             if (!building) {
-                res.status(404).json({ message: `Prédio com ID ${id} não encontrado.` });
+                res.status(404).json({ message: `Prédio com id ${id} não encontrado.` });
                 return;
             }
 
@@ -149,10 +149,10 @@ export class BuildingController {
             const deleted = await this.buildingService.deleteOneBuilding(Number(id));
 
             if (deleted) {
-                res.status(204).json({ message: `Prédio com ID ${id} excluído com sucesso.` });
+                res.status(204).json({ message: `Prédio com id ${id} excluído com sucesso.` });
                 return;
             } else {
-                res.status(404).json({ message: `Prédio com ID ${id} não encontrado.` });
+                res.status(404).json({ message: `Prédio com id ${id} não encontrado.` });
                 return;
             }
 

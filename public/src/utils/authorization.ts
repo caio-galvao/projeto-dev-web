@@ -158,7 +158,7 @@ export async function authorizeDeleteReserve(req: Request, user: any): Promise<b
 async function getReserveById(reserve_id: number): Promise<Reserve> {
     const reserve = await reserveService.getOneReserve(reserve_id);
     if (!reserve) {
-        const error: any = new Error( `Reserva com ID ${reserve_id} não encontrada.`);
+        const error: any = new Error( `Reserva com id ${reserve_id} não encontrada.`);
         error.status = 404;
         throw error;
     }
@@ -168,7 +168,7 @@ async function getReserveById(reserve_id: number): Promise<Reserve> {
 async function getWorkspaceById(workspace_id: number): Promise<Workspace> {
     const workspace = await workspaceService.getOneWorkspace(workspace_id);
     if (!workspace) {
-        const error: any = new Error( `Espaço de trabalho com ID ${workspace_id} não encontrado.`);
+        const error: any = new Error( `Espaço de trabalho com id ${workspace_id} não encontrado.`);
         error.status = 404;
         throw error;
     }
@@ -178,7 +178,7 @@ async function getWorkspaceById(workspace_id: number): Promise<Workspace> {
 async function getUsersByRoom(room_id: number): Promise<UserDTO[]> {
     const room = await roomService.getOneRoom(room_id);
     if (!room) {
-        const error: any = new Error(`Sala com ID ${room_id} não encontrada.`);
+        const error: any = new Error(`Sala com id ${room_id} não encontrada.`);
         error.status = 404;
         throw error;
     }
@@ -193,7 +193,7 @@ async function getUsersByRoom(room_id: number): Promise<UserDTO[]> {
 async function getRoomById(room_id: number): Promise<Room> {
     const room = await roomService.getOneRoom(room_id);
     if (!room) {
-        const error: any = new Error(`Sala com ID ${room_id} não encontrada.`);
+        const error: any = new Error(`Sala com id ${room_id} não encontrada.`);
         error.status = 404;
         throw error;
     }
@@ -203,7 +203,7 @@ async function getRoomById(room_id: number): Promise<Room> {
 async function getBuildingById(building_id: number): Promise<Building> {
     const building = await buildingService.getOneBuilding(building_id);
     if (!building) {
-        const error: any = new Error( `Prédio com ID ${building_id} não encontrado.`);
+        const error: any = new Error( `Prédio com id ${building_id} não encontrado.`);
         error.status = 404;
         throw error;
     }
@@ -213,7 +213,7 @@ async function getBuildingById(building_id: number): Promise<Building> {
 async function getCompanyById(company_id: number): Promise<Company> {
     const company = await companyService.getOneCompany(company_id);
     if (!company) {
-        const error: any = new Error(`Empresa com ID ${company_id} não encontrada.`);
+        const error: any = new Error(`Empresa com id ${company_id} não encontrada.`);
         error.status = 404;
         throw error;
     }
