@@ -70,7 +70,7 @@ export class ReserveController {
             const reserves = await this.reserveService.getReservesByWorkspace(Number(workspace_id));
 
             if (!reserves) {
-                res.status(204).json({ message: "Não há reservas registradas" });
+                res.status(200).json({ message: "Não há reservas registradas" });
                 return;
             }
 

@@ -233,8 +233,6 @@ describe("CompanyController - getOneCompany", () => {
       .send(newCompany)
       .set("Authorization", `Bearer ${token}`);
 
-    // expect(response_create.status).toBe(201);
-
     const companyId = response_create.body.id;
     const response = await request(app)
       .get(`/company/${companyId}`)
@@ -470,7 +468,7 @@ describe("CompanyController - editOneCompany", () => {
   });
 
   describe("CompanyController - deleteOneCompany", () => {
-    it("deve retornar status 204 ao deletar uma empresa existente", async () => {
+    it("deve retornar status 200 ao deletar uma empresa existente", async () => {
       const boss = {
         id: "123.456.789-00",
         name: "Carlos",
@@ -507,7 +505,8 @@ describe("CompanyController - editOneCompany", () => {
         .delete(`/company/${companyId}`)
         .set("Authorization", `Bearer ${token}`);
   
-      expect(response_delete.status).toBe(204);
+      expect(response_delete.status).toBe(200);
+      expect(response_delete.body).toEqual({"message": `Empresa com id ${companyId} excluída com sucesso.`});
     });
   
     it("deve retornar status 404 ao tentar deletar uma empresa inexistente", async () => {

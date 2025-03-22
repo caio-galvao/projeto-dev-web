@@ -52,7 +52,7 @@ export class CompanyController {
             const companies = await this.companyService.getAllCompanies();
 
             if (!companies) {
-                res.status(204).json({ message: "Não há empresas registradas" });
+                res.status(200).json({ message: "Não há empresas registradas" });
                 return;
             }
 
@@ -158,7 +158,7 @@ export class CompanyController {
             const deleted = await this.companyService.deleteOneCompany(Number(id));
 
             if (deleted) {
-                res.status(204).json({ message: `Empresa com id ${id} excluída com sucesso.` });
+                res.status(200).json({ message: `Empresa com id ${id} excluída com sucesso.` });
                 return;
             } else {
                 res.status(404).json({ message: `Empresa com id ${id} não encontrada.` });

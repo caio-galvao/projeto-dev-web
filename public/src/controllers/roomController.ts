@@ -93,7 +93,7 @@ export class RoomController {
                 return;
             }
             if (rooms.length === 0) {
-                res.status(204).json({ message: "Não há salas resgistradas" }); 
+                res.status(200).json({ message: "Não há salas resgistradas" }); 
                 return;
             }
 
@@ -127,7 +127,7 @@ export class RoomController {
                 return;
             }
             if (rooms.length === 0) {
-                res.status(204).json({ message: "Não há salas resgistradas para este gerente" });
+                res.status(200).json({ message: "Não há salas resgistradas para este gerente" });
                 return;
             }
 
@@ -260,7 +260,7 @@ export class RoomController {
             const deleted = await this.roomService.deleteOneRoom(Number(id));
     
             if (deleted) {
-                res.status(204).json({ message: `Sala com id ${id} excluída com sucesso.` });
+                res.status(200).json({ message: `Sala com id ${id} excluída com sucesso.` });
                 return;
             } else {
                 res.status(404).json({ message: `Sala com id ${id} não encontrada.` });
@@ -278,7 +278,7 @@ export class RoomController {
             const users = await this.roomService.getUsersByRoom(Number(room_id));
 
             if (!users) {
-                res.status(204).json({ message: "Não há usuários registrados nesta sala" });
+                res.status(200).json({ message: "Não há usuários registrados nesta sala" });
                 return;
             }
 
@@ -323,7 +323,7 @@ export class RoomController {
             const deleted = await this.roomService.deleteUserFromRoom(Number(room_id), user_id);
     
             if (deleted) {
-                res.status(204).json({ message: `Usuário com ID ${user_id} excluído da sala com sucesso.` });
+                res.status(200).json({ message: `Usuário com id ${user_id} excluído da sala com sucesso.` });
                 return;
             } else {
                 res.status(404).json({ message: `Usuário ou sala não encontrados.` });

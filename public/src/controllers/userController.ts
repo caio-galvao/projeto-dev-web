@@ -53,7 +53,7 @@ export class UserController {
             const users = await this.userService.getAllUsers();
 
             if (!users) {
-                res.status(204).json({ message: "Não há usuários resgistrados." });
+                res.status(200).json({ message: "Não há usuários resgistrados." });
                 return;
             }
 

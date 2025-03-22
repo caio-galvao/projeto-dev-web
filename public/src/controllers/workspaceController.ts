@@ -24,7 +24,7 @@ export class WorkspaceController {
             const workspaces = await this.workspaceService.getWorkspacesByRoom(Number(room_id));
 
             if (!workspaces) {
-                res.status(204).json({ message: `Não há espaços de trabalho registrados para esta sala ${room_id}` });
+                res.status(200).json({ message: `Não há espaços de trabalho registrados para esta sala ${room_id}` });
                 return;
             }
 

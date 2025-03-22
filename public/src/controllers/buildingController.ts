@@ -54,7 +54,7 @@ export class BuildingController {
             const buildings = await this.buildingService.getBuildingsByCompany(Number(company_id));
 
             if (!buildings) {
-                res.status(204).json({ message: `Não há prédios registrados para a empresa com id ${company_id}` });
+                res.status(200).json({ message: `Não há prédios registrados para a empresa com id ${company_id}` });
                 return;
             }
 
@@ -149,7 +149,7 @@ export class BuildingController {
             const deleted = await this.buildingService.deleteOneBuilding(Number(id));
 
             if (deleted) {
-                res.status(204).json({ message: `Prédio com id ${id} excluído com sucesso.` });
+                res.status(200).json({ message: `Prédio com id ${id} excluído com sucesso.` });
                 return;
             } else {
                 res.status(404).json({ message: `Prédio com id ${id} não encontrado.` });

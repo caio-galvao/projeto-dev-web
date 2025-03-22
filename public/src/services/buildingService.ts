@@ -23,7 +23,7 @@ export class BuildingService {
     async getBuildingsByCompany(company_id: number): Promise<Building[] | null> {
         const company = await this.companyService.getOneCompany(company_id)
         if (!company) {
-            throw new Error(`Empresa com ID ${company_id} não encontrada.`);
+            throw new Error(`Empresa com id ${company_id} não encontrada.`);
         }
 
         const buildings = await this.buildingRepository.getBuildingsByCompany(company_id);
