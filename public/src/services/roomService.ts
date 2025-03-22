@@ -94,11 +94,11 @@ export class RoomService {
     async addUserInRoom(room_id: number, user_id: string): Promise<RoomUser | null> {
         const room = await this.getOneRoom(room_id);
         if (!room) {
-            throw new Error("Id da sala não encontrado");
+            throw new Error(`Sala com id ${room_id} não encontrada.`);
         }
         const user = await this.userService.getOneUser(user_id);
         if (!user) {
-            throw new Error("Id do usuário não encontrado");
+            throw new Error(`Usuário com id ${user_id} não encontrado.`);
         }
         return this.roomRepository.addUserInRoom(room_id, user_id)
     }

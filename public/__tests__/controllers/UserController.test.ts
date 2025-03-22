@@ -55,30 +55,30 @@ describe("UserController - getAllUsers", () => {
     );
   });
 
-  // it("deve retornar status 204 quando não houver usuários cadastrados", async () => {
-  //   const login = {
-  //     cpf: "987.654.321-00", // Apenas o usuário "ultra" pode autenticar
-  //     password: "123",
-  //   };
+  it("deve retornar status 204 quando não houver usuários cadastrados", async () => {
+    const login = {
+      cpf: "987.654.321-00", // Apenas o usuário "ultra" pode autenticar
+      password: "123",
+    };
 
-  //   // Criar um usuário "ultra" para autenticação
-  //   const ultraUser = {
-  //     id: "987.654.321-00",
-  //     name: "Maria",
-  //     password: "123",
-  //     type: "ultra",
-  //   };
+    // Criar um usuário "ultra" para autenticação
+    const ultraUser = {
+      id: "987.654.321-00",
+      name: "Maria",
+      password: "123",
+      type: "ultra",
+    };
 
-  //   await request(app).post("/users").send(ultraUser);
+    await request(app).post("/users").send(ultraUser);
 
-  //   const response_login = await request(app).post("/auth/login").send(login);
-  //   const token = response_login.body.token;
+    const response_login = await request(app).post("/auth/login").send(login);
+    const token = response_login.body.token;
 
-  //   const response = await request(app).get("/users").set("Authorization", `Bearer ${token}`);
+    const response = await request(app).get("/users").set("Authorization", `Bearer ${token}`);
 
-  //   expect(response.status).toBe(204);
-  //   expect(response.body).toEqual({});
-  // });
+    expect(response.status).toBe(204);
+    expect(response.body).toEqual({});
+  });
 
   it("deve retornar status 403 quando um usuário comum tentar acessar a lista de usuários", async () => {
     const commonUser = {
@@ -91,7 +91,7 @@ describe("UserController - getAllUsers", () => {
     await request(app).post("/users").send(commonUser);
 
     const login = {
-      cpf: "123.456.789-00", // Usuário comum tentando autenticar
+      cpf: "123.456.789-00",
       password: "123",
     };
 

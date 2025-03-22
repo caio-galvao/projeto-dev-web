@@ -305,11 +305,11 @@ export class RoomController {
 
             res.status(201).json(user_room);
         } catch (error: any) {
-            if (error.message === "Id da sala não encontrado") {
+            if (error.message.startsWith("Sala com id ")) {
                 res.status(404).json({ message: error.message });
                 return;
             }
-            if (error.message === "Id do usuário não encontrado") {
+            if (error.message.startsWith("Usuário com id ")) {
                 res.status(404).json({ message: error.message });
                 return;
             }
@@ -326,7 +326,7 @@ export class RoomController {
                 res.status(200).json({ message: `Usuário com id ${user_id} excluído da sala com sucesso.` });
                 return;
             } else {
-                res.status(404).json({ message: `Usuário ou sala não encontrados.` });
+                res.status(404).json({ message: `Usuário ou sala não encontrados.` }); //TODO
                 return;
             }
 

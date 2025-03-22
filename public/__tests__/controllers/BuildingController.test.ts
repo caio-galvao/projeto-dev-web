@@ -114,38 +114,38 @@ describe("BuildingController - createBuilding", () => {
       });
     });
   
-    // it("deve retornar status 400 ao tentar criar um prédio sem id da empresa", async () => {
-    //   const boss = {
-    //     id: "123.456.789-00",
-    //     name: "Carlos",
-    //     password: "123",
-    //     type: "master",
-    //   };
+    it("deve retornar status 400 ao tentar criar um prédio sem id da empresa", async () => {
+      const boss = {
+        id: "123.456.789-00",
+        name: "Carlos",
+        password: "123",
+        type: "master",
+      };
   
-    //   await request(app).post("/users").send(boss);
+      await request(app).post("/users").send(boss);
   
-    //   const login = {
-    //     cpf: "123.456.789-00",
-    //     password: "123",
-    //   };
+      const login = {
+        cpf: "123.456.789-00",
+        password: "123",
+      };
   
-    //   const response_login = await request(app).post("/auth/login").send(login);
-    //   const token = response_login.body.token;
+      const response_login = await request(app).post("/auth/login").send(login);
+      const token = response_login.body.token;
   
-    //   const newBuilding = {
-    //     name: "Prédio Teste",
-    //   };
+      const newBuilding = {
+        name: "Prédio Teste",
+      };
   
-    //   const response_create_building = await request(app)
-    //     .post("/building")
-    //     .send(newBuilding)
-    //     .set("Authorization", `Bearer ${token}`);
-    //   console.log(response_create_building.text);
-    //   expect(response_create_building.status).toBe(400);
-    //   expect(response_create_building.body).toEqual({
-    //     message: "O campo id da empresa é obrigatório.",
-    //   });
-    // });
+      const response_create_building = await request(app)
+        .post("/building")
+        .send(newBuilding)
+        .set("Authorization", `Bearer ${token}`);
+      console.log(response_create_building.text);
+      expect(response_create_building.status).toBe(400);
+      expect(response_create_building.body).toEqual({
+        message: "O campo id da empresa é obrigatório.",
+      });
+    });
   
     it("deve retornar status 409 ao tentar criar um prédio com nome já existente na mesma empresa", async () => {
       const boss = {
