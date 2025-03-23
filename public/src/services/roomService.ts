@@ -73,6 +73,10 @@ export class RoomService {
         if (!manager) {
             throw new Error("Id do gerente não encontrado");
         }
+        const roomWithName = await this.roomRepository.getRoomByName(name);
+        if (roomWithName && roomWithName.id != id) {
+            throw new Error("Uma sala com este nome já existe.");
+        }
         return this.roomRepository.updateRoom(id, { building_id, manager_id, name, schedule, workspace_config, equipments })
     }
 

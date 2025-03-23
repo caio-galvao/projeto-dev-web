@@ -211,6 +211,11 @@ async function getBuildingById(building_id: number): Promise<Building> {
 }
 
 async function getCompanyById(company_id: number): Promise<Company> {
+    if (!company_id) {
+        const error: any = new Error("O campo id da empresa é obrigatório.");
+        error.status = 400
+        throw error;
+    }
     const company = await companyService.getOneCompany(company_id);
     if (!company) {
         const error: any = new Error(`Empresa com id ${company_id} não encontrada.`);

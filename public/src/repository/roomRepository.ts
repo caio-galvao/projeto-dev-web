@@ -64,6 +64,18 @@ export class RoomRepository {
         }
     }
 
+    async getRoomByName(name: string) {
+        try {
+            const room = await Room.findOne({ where: { name } })
+            if (!room) {
+                return null;
+            }
+            return room;
+        } catch (error: any) {
+            throw new Error(`Erro ao buscar sala com nome ${name}: ${error.message}`);
+        }
+    }
+
     async updateRoom(id: number, updatedData: Partial<{ building_id: number, manager_id: string, name: string, schedule: string, workspace_config: string, equipments: string[] }>) {
         try {
             const room = await this.getRoomById(id);

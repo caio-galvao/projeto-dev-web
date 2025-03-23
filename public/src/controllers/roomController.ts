@@ -237,6 +237,10 @@ export class RoomController {
                 res.status(404).json({ message: error.message });
                 return;
             }
+            if (error.message === "Uma sala com este nome já existe.") {
+                res.status(409).json({ message: error.message });
+                return;
+            }
             res.status(500).json({ message: "Erro ao editar a sala", error: error.message });
         }
     };

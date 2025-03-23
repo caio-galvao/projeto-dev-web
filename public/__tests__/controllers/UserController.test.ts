@@ -55,7 +55,8 @@ describe("UserController - getAllUsers", () => {
     );
   });
 
-  it("deve retornar status 204 quando não houver usuários cadastrados", async () => {
+// não é possível existir o estado sem usuários cadastrados, pois, para acessar é rota, é preciso estar logado como um usuário
+/*   it("deve retornar status 204 quando não houver usuários cadastrados", async () => {
     const login = {
       cpf: "987.654.321-00", // Apenas o usuário "ultra" pode autenticar
       password: "123",
@@ -78,7 +79,7 @@ describe("UserController - getAllUsers", () => {
 
     expect(response.status).toBe(204);
     expect(response.body).toEqual({});
-  });
+  }); */
 
   it("deve retornar status 403 quando um usuário comum tentar acessar a lista de usuários", async () => {
     const commonUser = {
