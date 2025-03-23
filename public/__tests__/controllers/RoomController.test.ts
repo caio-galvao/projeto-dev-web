@@ -316,7 +316,7 @@ describe("RoomController - createRoom", () => {
         });
     });
     
-      it("deve retornar status 400 ao tentar criar uma sala com id do gerente no formato errado", async () => {
+    it("deve retornar status 400 ao tentar criar uma sala com id do gerente no formato errado", async () => {
         const boss = {
           id: "123.456.789-00",
           name: "Carlos",
@@ -379,7 +379,7 @@ describe("RoomController - createRoom", () => {
         });
     });
     
-      it("deve retornar status 400 ao tentar criar uma sala com id do prédio não sendo um número", async () => {
+    it("deve retornar status 400 ao tentar criar uma sala com id do prédio não sendo um número", async () => {
         const boss = {
           id: "123.456.789-00",
           name: "Carlos",
@@ -417,7 +417,7 @@ describe("RoomController - createRoom", () => {
         });
     });
     
-      it("deve retornar status 400 ao tentar criar uma sala sem horário", async () => {
+    it("deve retornar status 400 ao tentar criar uma sala sem horário", async () => {
         const boss = {
           id: "123.456.789-00",
           name: "Carlos",
@@ -479,7 +479,7 @@ describe("RoomController - createRoom", () => {
         });
     });
 
-      it("deve retornar status 400 ao tentar criar uma sala sem configuração de espaço", async () => {
+    it("deve retornar status 400 ao tentar criar uma sala sem configuração de espaço", async () => {
         const boss = {
           id: "123.456.789-00",
           name: "Carlos",
@@ -541,7 +541,7 @@ describe("RoomController - createRoom", () => {
         });
     });
     
-      it("deve retornar status 400 ao tentar criar uma sala sem equipamentos", async () => {
+    it("deve retornar status 400 ao tentar criar uma sala sem equipamentos", async () => {
         const boss = {
           id: "123.456.789-00",
           name: "Carlos",
@@ -603,108 +603,109 @@ describe("RoomController - createRoom", () => {
         });
     });
     
-    //   it("deve retornar status 404 ao tentar criar uma sala com prédio não encontrado", async () => {
-    //     const boss = {
-    //       id: "123.456.789-00",
-    //       name: "Carlos",
-    //       password: "123",
-    //       type: "ulta",
-    //     };
-    
-    //     await request(app).post("/users").send(boss);
-    
-    //     const login = {
-    //       cpf: "123.456.789-00",
-    //       password: "123",
-    //     };
-    
-    //     const response_login = await request(app).post("/auth/login").send(login);
-    //     const token = response_login.body.token;
-    
-    //     const invalidRoom = {
-    //       building_id: 999,
-    //       manager_id: "123.456.789-00",
-    //       name: "Sala Teste",
-    //       schedule: "08:00-18:00",
-    //       workspace_config: "Configuração padrão",
-    //       equipments: ["Projetor", "Mesa", "Cadeiras"],
-    //     };
-    
-    //     const response_create_room = await request(app)
-    //       .post("/room")
-    //       .send(invalidRoom)
-    //       .set("Authorization", `Bearer ${token}`);
-    //     console.log(response_create_room.text);
-    //     expect(response_create_room.status).toBe(404);
-    //     expect(response_create_room.body).toEqual({
-    //       message: "Id do prédio não encontrado",
-    //     });
-    //   });
-    
-      it("deve retornar status 404 ao tentar criar uma sala com gerente não encontrado", async () => {
+    it("deve retornar status 404 ao tentar criar uma sala com prédio não encontrado", async () => {
         const boss = {
           id: "123.456.789-00",
           name: "Carlos",
           password: "123",
-          type: "master",
+          type: "ulta",
         };
-    
+      
         await request(app).post("/users").send(boss);
-    
+      
         const login = {
           cpf: "123.456.789-00",
           password: "123",
         };
-    
+      
         const response_login = await request(app).post("/auth/login").send(login);
         const token = response_login.body.token;
-    
-        const newCompany = {
-          name: "Empresa Teste",
-          manager_id: "123.456.789-00",
-          location: "Rua A, 123",
-        };
-    
-        const response_create_company = await request(app)
-          .post("/company")
-          .send(newCompany)
-          .set("Authorization", `Bearer ${token}`);
-    
-        const companyId = response_create_company.body.id;
-    
-        const newBuilding = {
-          name: "Prédio Teste",
-          company_id: companyId,
-        };
-    
-        const response_create_building = await request(app)
-          .post("/building")
-          .send(newBuilding)
-          .set("Authorization", `Bearer ${token}`);
-    
-        const buildingId = response_create_building.body.id;
-    
+      
         const invalidRoom = {
-          building_id: buildingId,
-          manager_id: "999.999.999-99",
+          building_id: 999,
+          manager_id: "123.456.789-00",
           name: "Sala Teste",
           schedule: "08:00-18:00",
           workspace_config: "Configuração padrão",
           equipments: ["Projetor", "Mesa", "Cadeiras"],
         };
-    
+      
         const response_create_room = await request(app)
           .post("/room")
           .send(invalidRoom)
           .set("Authorization", `Bearer ${token}`);
-    
+        
+        console.log(response_create_room.text);
         expect(response_create_room.status).toBe(404);
         expect(response_create_room.body).toEqual({
-          message: "Id do gerente não encontrado",
+          message: "Id do prédio não encontrado",
         });
     });
+      
 
-  });
+    it("deve retornar status 404 ao tentar criar uma sala com gerente não encontrado", async () => {
+    const boss = {
+        id: "123.456.789-00",
+        name: "Carlos",
+        password: "123",
+        type: "master",
+    };
+
+    await request(app).post("/users").send(boss);
+
+    const login = {
+        cpf: "123.456.789-00",
+        password: "123",
+    };
+
+    const response_login = await request(app).post("/auth/login").send(login);
+    const token = response_login.body.token;
+
+    const newCompany = {
+        name: "Empresa Teste",
+        manager_id: "123.456.789-00",
+        location: "Rua A, 123",
+    };
+
+    const response_create_company = await request(app)
+        .post("/company")
+        .send(newCompany)
+        .set("Authorization", `Bearer ${token}`);
+
+    const companyId = response_create_company.body.id;
+
+    const newBuilding = {
+        name: "Prédio Teste",
+        company_id: companyId,
+    };
+
+    const response_create_building = await request(app)
+        .post("/building")
+        .send(newBuilding)
+        .set("Authorization", `Bearer ${token}`);
+
+    const buildingId = response_create_building.body.id;
+
+    const invalidRoom = {
+        building_id: buildingId,
+        manager_id: "999.999.999-99",
+        name: "Sala Teste",
+        schedule: "08:00-18:00",
+        workspace_config: "Configuração padrão",
+        equipments: ["Projetor", "Mesa", "Cadeiras"],
+    };
+
+    const response_create_room = await request(app)
+        .post("/room")
+        .send(invalidRoom)
+        .set("Authorization", `Bearer ${token}`);
+
+    expect(response_create_room.status).toBe(404);
+    expect(response_create_room.body).toEqual({
+        message: "Id do gerente não encontrado",
+    });
+    });
+});
 
 describe("RoomController - getRoomsByBuilding", () => {
     it("deve retornar status 200 e uma lista de salas quando houver salas registradas no prédio", async () => {
@@ -844,34 +845,34 @@ describe("RoomController - getRoomsByBuilding", () => {
         });
     });
 
-    // it("deve retornar status 400 quando o id do prédio não for passado", async () => {
-    //     const boss = {
-    //         id: "123.456.789-00",
-    //         name: "Carlos",
-    //         password: "123",
-    //         type: "master",
-    //     };
-
-    //     await request(app).post("/users").send(boss);
-
-    //     const login = {
-    //         cpf: "123.456.789-00",
-    //         password: "123",
-    //     };
-
-    //     const response_login = await request(app).post("/auth/login").send(login);
-    //     const token = response_login.body.token;
-
-    //     const response_get_rooms = await request(app)
-    //         .get("/room/building/")
-    //         .set("Authorization", `Bearer ${token}`);
-
-    //     expect(response_get_rooms.status).toBe(400);
-    //     expect(response_get_rooms.body).toEqual({
-    //         message: "O campo id do prédio é obrigatório.",
-    //     });
-    // });
-
+    it("deve retornar status 400 quando o id do prédio não for passado", async () => {
+        const boss = {
+            id: "123.456.789-00",
+            name: "Carlos",
+            password: "123",
+            type: "master",
+        };
+    
+        await request(app).post("/users").send(boss);
+    
+        const login = {
+            cpf: "123.456.789-00",
+            password: "123",
+        };
+    
+        const response_login = await request(app).post("/auth/login").send(login);
+        const token = response_login.body.token;
+    
+        const response_get_rooms = await request(app)
+            .get("/room/building/")
+            .set("Authorization", `Bearer ${token}`);
+    
+        expect(response_get_rooms.status).toBe(400);
+        expect(response_get_rooms.body).toEqual({
+            message: "O campo id do prédio é obrigatório.",
+        });
+    });
+    
     it("deve retornar status 404 quando o prédio não for encontrado", async () => {
         const boss = {
         id: "123.456.789-00",
