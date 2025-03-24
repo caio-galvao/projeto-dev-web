@@ -608,7 +608,7 @@ describe("RoomController - createRoom", () => {
           id: "123.456.789-00",
           name: "Carlos",
           password: "123",
-          type: "ulta",
+          type: "ultra",
         };
       
         await request(app).post("/users").send(boss);

@@ -185,7 +185,7 @@ describe("ReserveController - createReserve", () => {
   it("deve retornar status 404 ao tentar criar uma reserva com espaço de trabalho não cadastrado", async () => {
     const reserve = {
       user_id: "777.465.769-20",
-      workspace_id: 999,
+      workspace_id: 7,
       time: "05/02/2025-10:00",
     };
 
@@ -196,13 +196,13 @@ describe("ReserveController - createReserve", () => {
 
     expect(response.status).toBe(404);
     expect(response.body).toEqual({
-      message: "Id do espaço de trabalho não encontrado.",
+      message: "Espaço de trabalho com id 7 não encontrado.",
     });
   });
 
-  it("deve retornar status 404 ao tentar criar uma reserva com usuário não cadastrado", async () => {
+  it("deve retornar status 403 ao tentar criar uma reserva com usuário diferente do usuário fez a operação", async () => {
     const reserve = {
-      user_id: "000.000.000-00",
+      user_id: "123.456.789-00",
       workspace_id: 1,
       time: "05/02/2025-10:00",
     };
@@ -212,13 +212,13 @@ describe("ReserveController - createReserve", () => {
       .send(reserve)
       .set("Authorization", `Bearer ${token}`);
 
-    expect(response.status).toBe(404);
+    expect(response.status).toBe(403);
     expect(response.body).toEqual({
-      message: "Id do usuário não encontrado.",
+      message: "Access denied. Attribute check failed.",
     });
   });
 
-  it("deve retornar status 404 ao tentar criar uma reserva com usuário não cadastrado naquela sala", async () => {
+  it("deve retornar status 403 ao tentar criar uma reserva com usuário não cadastrado naquela sala", async () => {
     const user = {
       id: "111.111.111-11",
       name: "Ana",
@@ -228,11 +228,11 @@ describe("ReserveController - createReserve", () => {
     await request(app).post("/users").send(user);
   
     const login = {
-      cpf: "123.456.789-00",
+      cpf: "111.111.111-11",
       password: "123",
     };
     const loginResponse = await request(app).post("/auth/login").send(login);
-    const token_master = loginResponse.body.token;
+    const token_user = loginResponse.body.token;
     
     const reserve = {
       user_id: "111.111.111-11",
@@ -243,11 +243,11 @@ describe("ReserveController - createReserve", () => {
     const response = await request(app)
       .post("/reserve")
       .send(reserve)
-      .set("Authorization", `Bearer ${token_master}`);
+      .set("Authorization", `Bearer ${token_user}`);
 
-    expect(response.status).toBe(404);
+    expect(response.status).toBe(403);
     expect(response.body).toEqual({
-      message: "Id do usuário não cadastrado na sala.",
+      message: "Access denied. Attribute check failed.",
     });
   });
 });
@@ -383,7 +383,7 @@ describe("ReserveController - getReservesByWorkspace", () => {
 
     expect(response.status).toBe(404);
     expect(response.body).toEqual({
-      message: "Espaço de trabalho não encontrado.",
+      message: "Espaço de trabalho com ID 7 não encontrado.",
     });
   });
 });

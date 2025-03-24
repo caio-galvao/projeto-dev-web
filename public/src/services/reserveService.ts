@@ -17,12 +17,12 @@ export class ReserveService {
     async createReserve( user_id: string, workspace_id: number, time: string) : Promise<Reserve | null> {
         const user = await this.userService.getOneUser(user_id)
         if (!user) {
-            throw new Error(`Id do usuário inválido`);
+            throw new Error(`Id do usuário não encontrado.`);
         }
 
         const workspace = await this.workspaceService.getOneWorkspace(workspace_id)
         if (!workspace) {
-            throw new Error(`Id do espaço de trabalho inválido`);
+            throw new Error(`Id do espaço de trabalho não encontrado.`);
         }
 
         return this.reserveRepository.createReserve(user_id, workspace_id, time)

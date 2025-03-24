@@ -148,6 +148,12 @@ export class RoomController {
                 return;
             }
 
+            if (id === 'building/' || id === 'building') {
+                //para get rooms by building
+                res.status(400).json({ message: 'O campo id do prédio é obrigatório.'});
+                return;
+            }
+
             if (isNaN(Number(id))) {
                 res.status(400).json({ error: "O id da sala deve ser um número" });
                 return 

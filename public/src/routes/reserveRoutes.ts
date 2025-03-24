@@ -11,7 +11,7 @@ reserveRoutes.post("/",
     authorize(['comum', 'admin', 'master', 'ultra'], authorizeCreateReserve),
     (req, res) => ReserveController.createReserve(req, res));
 
-reserveRoutes.get("/workspace/:id", authenticate, (req, res) => ReserveController.getReservesByWorkspace(req, res));
+reserveRoutes.get("/workspace/:workspace_id", authenticate, (req, res) => ReserveController.getReservesByWorkspace(req, res));
 
 reserveRoutes.get("/user/:user_id", authenticate, (req, res) => ReserveController.getReservesByUser(req, res));
 

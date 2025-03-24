@@ -43,7 +43,7 @@ export class RoomService {
 
         var i: number = 0
         for (i; i < num_workspaces; i++) {
-            this.workspaceRepository.createWorkspace(room.id, i+1, []);
+            await this.workspaceRepository.createWorkspace(room.id, i+1, []);
         }
 
         return room;

@@ -98,10 +98,16 @@ export async function authorizeByWorkspaceId(req: Request, user: any): Promise<b
 }
 
 export async function authorizeCreateReserve(req: Request, user: any): Promise<boolean> {
-    const {user_id, workspace_id, time } = req.body;
+    const {user_id, workspace_id } = req.body;
 
-    if ( !user_id || !workspace_id || !time) {
-        const error: any = new Error("Dados inválidos. Todos os campos são obrigatórios.");
+    if (!user_id) {
+        const error: any = new Error("O campo id do usuário é obrigatório.");
+        error.status = 400;
+        throw error;
+    }
+
+    if (!workspace_id) {
+        const error: any = new Error("O campo id do espaço de trabalho é obrigatório.");
         error.status = 400;
         throw error;
     }

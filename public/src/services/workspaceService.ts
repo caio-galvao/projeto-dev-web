@@ -38,7 +38,12 @@ export class WorkspaceService {
     async editOneWorkspace(id: number, room_id: number, position: number, equipments: Array<string>): Promise<Workspace | null> {
         const room = await this.roomService.getOneRoom(room_id)
         if (!room) {
-            throw new Error('Id da sala inválido');
+            throw new Error('Id da sala não encontrado.');
+        }
+
+        const workspaceWithPosition = await this.workspaceRepository.getWorkspaceByRoomPosition(room_id, position)
+        if (workspaceWithPosition && workspaceWithPosition.id != id) {
+            throw new Error(`Posição ${position} pertence a outro espaço de trabalho na mesma sala.`);
         }
 
         return this.workspaceRepository.updateWorkspace(id, { room_id, position, equipments })

@@ -44,9 +44,9 @@ export class ReserveController {
 
             res.status(201).json(reserve);
         } catch (error: any) {
-            if (error.message === `Id do usuário inválido`) {
+            if (error.message === `Id do usuário não encontrado.`) {
                 res.status(400).json({ message: error.message });
-            } else if (error.message === `Id do espaço de trabalho inválido`) {
+            } else if (error.message === `Id do espaço de trabalho não encontrado.`) {
                 res.status(400).json({ message: error.message });
             } else {
                 res.status(500).json({ message: "Erro ao criar a reserva", error: error.message });
@@ -70,7 +70,7 @@ export class ReserveController {
             const reserves = await this.reserveService.getReservesByWorkspace(Number(workspace_id));
 
             if (!reserves) {
-                res.status(200).json({ message: "Não há reservas registradas" });
+                res.status(204).json({ message: "Não há reservas registradas" });
                 return;
             }
 

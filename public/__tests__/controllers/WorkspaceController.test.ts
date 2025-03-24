@@ -278,7 +278,7 @@ describe("WorkspaceController - updateWorkspace", () => {
 
     expect(response.status).toBe(404);
     expect(response.body).toEqual({
-      message: "ID da sala não encontrado."
+      message: "Id da sala não encontrado."
     });
   });
 
