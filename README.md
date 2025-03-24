@@ -40,6 +40,7 @@ DB_PORT=5432 # 3306 para MySQL
 DB_USER=db_user
 DB_PASS=db_password
 DB_NAME=db_name
+DB_NAME_TEST=db_tests_name
 JWT_SECRET=jwt_secret_key
 ```
 
@@ -47,6 +48,14 @@ Com a configuração concluída e o banco de dados executando, execute o backend
 
 ```
 npm run dev
+```
+
+### Testes
+
+Foram implementados testes de api para o backend. Os arquivos de teste estão em `public/__tests__/controllers`. É preciso criar um banco de dados específico para os testes, com o nome especificado no `.env`. Execute os testes com:
+
+```
+npm test
 ```
 
 ## Modelo Entidade-Relacionamento (MER)
