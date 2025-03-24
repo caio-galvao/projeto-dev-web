@@ -14,7 +14,7 @@ export const authenticate = (req: Request, res: Response, next: NextFunction): v
         (req as any).user = decoded; // Adiciona o usuário decodificado ao objeto `req`
         next();
     } catch (err) {
-        res.status(400).json({ message: 'Invalid token.' });
+        res.status(400).json({ message: 'Token inválido.' });
     }
 };
 
@@ -24,7 +24,9 @@ export const authorize = (
     return async (req: Request, res: Response, next: NextFunction): Promise<void> => {
         const user = (req as any).user;
         if (!user || !allowedRoles.includes(user.role)) {
-            res.status(403).json({ message: 'Access denied. Insufficient permissions.' });
+            res.status(403).json({ 
+                message: `Acesso negado. Apenas usuários do(s) tipo(s) ${allowedRoles.join(', ')} pode(m) acessar esta rota.` 
+            });
             return;
         }
         if (condition) {

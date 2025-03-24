@@ -52,7 +52,7 @@ export class CompanyController {
             const companies = await this.companyService.getAllCompanies();
 
             if (!companies) {
-                res.status(204).json({ message: "Não há empresas registradas" });
+                res.status(200).json({ message: "Não há empresas registradas" });
                 return;
             }
 
@@ -67,11 +67,11 @@ export class CompanyController {
             const { id } = req.params;
 
             if (!id) {
-                res.status(400).json({ message: "O campo id da compania é obrigatório." });
+                res.status(400).json({ message: "O campo id da empresa é obrigatório." });
                 return;
             }
             if (isNaN(Number(id))) {
-                res.status(400).json({ error: "O id da compania deve ser um número" });
+                res.status(400).json({ error: "O id da empresa deve ser um número" });
                 return 
             }
             
@@ -93,11 +93,11 @@ export class CompanyController {
             const { id } = req.params;
 
             if (!id) {
-                res.status(400).json({ message: "O campo id da compania é obrigatório." });
+                res.status(400).json({ message: "O campo id da empresa é obrigatório." });
                 return;
             }
             if (isNaN(Number(id))) {
-                res.status(400).json({ error: "O id da compania deve ser um número" });
+                res.status(400).json({ error: "O id da empresa deve ser um número" });
                 return 
             }
 
@@ -147,18 +147,18 @@ export class CompanyController {
             const { id } = req.params;
 
             if (!id) {
-                res.status(400).json({ message: "O campo id da compania é obrigatório." });
+                res.status(400).json({ message: "O campo id da empresa é obrigatório." });
                 return;
             }
             if (isNaN(Number(id))) {
-                res.status(400).json({ error: "O id da compania deve ser um número" });
+                res.status(400).json({ error: "O id da empresa deve ser um número" });
                 return 
             }
 
             const deleted = await this.companyService.deleteOneCompany(Number(id));
 
             if (deleted) {
-                res.status(204).json({ message: `Empresa com id ${id} excluída com sucesso.` });
+                res.status(200).json({ message: `Empresa com id ${id} excluída com sucesso.` });
                 return;
             } else {
                 res.status(404).json({ message: `Empresa com id ${id} não encontrada.` });

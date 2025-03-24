@@ -28,6 +28,7 @@ npm install express dotenv pg mysql2 sequelize
 npm install bcryptjs jsonwebtoken
 npm install --save-dev typescript ts-node @types/node @types/express @types/dotenv
 npm install --save-dev @types/bcryptjs @types/jsonwebtoken
+npm install --save-dev jest ts-jest @types/jest supertest @types/supertest
 ```
 
 O projeto utiliza banco de dados postgresql, então é preciso instalar e configurar, criando um usuário e um banco de dados. Com o postgresql, crie um arquivo .env no diretório base do projeto com as seguintes informações de acesso:
@@ -39,6 +40,7 @@ DB_PORT=5432 # 3306 para MySQL
 DB_USER=db_user
 DB_PASS=db_password
 DB_NAME=db_name
+DB_NAME_TEST=db_tests_name
 JWT_SECRET=jwt_secret_key
 ```
 
@@ -46,6 +48,14 @@ Com a configuração concluída e o banco de dados executando, execute o backend
 
 ```
 npm run dev
+```
+
+### Testes
+
+Foram implementados testes de api para o backend. Os arquivos de teste estão em `public/__tests__/controllers`. É preciso criar um banco de dados específico para os testes, com o nome especificado no `.env`. Execute os testes com:
+
+```
+npm test
 ```
 
 ## Modelo Entidade-Relacionamento (MER)

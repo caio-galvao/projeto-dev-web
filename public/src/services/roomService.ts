@@ -43,7 +43,7 @@ export class RoomService {
 
         var i: number = 0
         for (i; i < num_workspaces; i++) {
-            this.workspaceRepository.createWorkspace(room.id, i+1, []);
+            await this.workspaceRepository.createWorkspace(room.id, i+1, []);
         }
 
         return room;
@@ -73,6 +73,10 @@ export class RoomService {
         if (!manager) {
             throw new Error("Id do gerente não encontrado");
         }
+        const roomWithName = await this.roomRepository.getRoomByName(name);
+        if (roomWithName && roomWithName.id != id) {
+            throw new Error("Uma sala com este nome já existe.");
+        }
         return this.roomRepository.updateRoom(id, { building_id, manager_id, name, schedule, workspace_config, equipments })
     }
 
@@ -94,11 +98,11 @@ export class RoomService {
     async addUserInRoom(room_id: number, user_id: string): Promise<RoomUser | null> {
         const room = await this.getOneRoom(room_id);
         if (!room) {
-            throw new Error("Id da sala não encontrado");
+            throw new Error(`Sala com id ${room_id} não encontrada.`);
         }
         const user = await this.userService.getOneUser(user_id);
         if (!user) {
-            throw new Error("Id do usuário não encontrado");
+            throw new Error(`Usuário com id ${user_id} não encontrado.`);
         }
         return this.roomRepository.addUserInRoom(room_id, user_id)
     }

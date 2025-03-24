@@ -37,6 +37,20 @@ export class WorkspaceRepository {
         }
     }
 
+    async getWorkspaceByRoomPosition(room_id: number, position: number) {
+        try {
+            const workspaces = await Workspace.findAll({
+                where: { room_id, position }
+            });            
+            if (workspaces.length === 0) {
+                return null;
+            }
+            return workspaces[0];
+        } catch (error: any) {
+            throw new Error(`Erro ao buscar espaço de trabalho com sala ${room_id} e posição ${position}: ${error.message}`);
+        }
+    }
+
     async updateWorkspace(id: number, data: Partial<Workspace>) {
         const workspace = await Workspace.findOne({ where: { id: id } });
         if (!workspace) return null;

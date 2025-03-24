@@ -53,41 +53,40 @@ export class UserController {
             const users = await this.userService.getAllUsers();
 
             if (!users) {
-                res.status(204).json({ message: "Não há usuários resgistrados" });
+                res.status(204).json({ message: "Não há usuários resgistrados." });
                 return;
             }
 
             res.json(users);
         } catch (error: any) {
-            res.status(500).json({ message: "Erro ao obter os usuários", error: error.message });
+            res.status(500).json({ message: "Erro ao obter os usuários.", error: error.message });
         }
     };
 
     async getOneUser(req: Request, res: Response): Promise<void> {
         try {
             const { id } = req.params;
-            
             if (!id) {
                 res.status(400).json({ message: "O campo CPF é obrigatório." });
                 return;
             }
-
+            
             const cpfRegex = /^\d{3}\.\d{3}\.\d{3}\-\d{2}$/;
             if (!cpfRegex.test(id)) {
                 res.status(400).json({ message: "O campo CPF deve estar no formato XXX.XXX.XXX-XX." });
                 return;
             }
-
+            
             const user = await this.userService.getOneUser(id);
-    
+
             if (!user) {
-                res.status(404).json({ message: "Usuário não encontrado" });
+                res.status(404).json({ message: "Usuário não encontrado." });
                 return;
             }
     
             res.json(user);
         } catch (error: any) {
-            res.status(500).json({ message: "Erro ao obter o usuário", error: error.message });
+            res.status(500).json({ message: "Erro ao obter o usuário.", error: error.message });
         }
     };
 
@@ -151,13 +150,13 @@ export class UserController {
             const user = await this.userService.deleteOneUser(id);
     
             if (!user) {
-                res.status(404).json({ message: "Usuário não encontrado" });
+                res.status(404).json({ message: "Usuário não encontrado." });
                 return;
             }
     
             res.status(204).json(user);
         } catch (error: any) {
-            res.status(500).json({ message: "Erro ao remover o usuário", error: error.message });
+            res.status(500).json({ message: "Erro ao remover o usuário.", error: error.message });
         }
     };
 }

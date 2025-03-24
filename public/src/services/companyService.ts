@@ -21,13 +21,13 @@ export class CompanyService {
     }
 
     async getAllCompanies(): Promise<Company[] | null> {
-        const users = await this.companyRepository.getAllCompanies();
-        return users;
+        const companies = await this.companyRepository.getAllCompanies();
+        return companies;
     }
 
     async getOneCompany(id: number): Promise<Company | null > {
-        const user = await this.companyRepository.getCompanyById(id);
-        return user;
+        const company = await this.companyRepository.getCompanyById(id);
+        return company;
     }
 
     async editOneCompany(id: number, name: string, manager_id: string, location: string): Promise<Company | null> {

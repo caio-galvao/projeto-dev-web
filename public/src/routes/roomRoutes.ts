@@ -11,7 +11,7 @@ roomRoutes.post("/",
     authorize(['master', 'ultra'], authorizeByBuildingIdInBody),
     (req, res) => RoomController.createRoom(req, res));
 
-roomRoutes.get("/building/:building_id", authorize(['admin', 'master', 'ultra']), authenticate, (req, res) => RoomController.getRoomsByBuilding(req, res));
+roomRoutes.get("/building/:building_id", authenticate, authorize(['admin', 'master', 'ultra']), (req, res) => RoomController.getRoomsByBuilding(req, res));
 
 roomRoutes.get("/manager/:manager_id", authenticate, authorize(['admin', 'master', 'ultra']), (req, res) => RoomController.getRoomsByManager(req, res));
 

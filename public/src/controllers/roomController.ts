@@ -93,7 +93,7 @@ export class RoomController {
                 return;
             }
             if (rooms.length === 0) {
-                res.status(204).json({ message: "Não há salas resgistradas" }); 
+                res.status(200).json({ message: "Não há salas resgistradas" }); 
                 return;
             }
 
@@ -127,7 +127,7 @@ export class RoomController {
                 return;
             }
             if (rooms.length === 0) {
-                res.status(204).json({ message: "Não há salas resgistradas para este gerente" });
+                res.status(200).json({ message: "Não há salas resgistradas para este gerente" });
                 return;
             }
 
@@ -145,6 +145,12 @@ export class RoomController {
 
             if (!id) {
                 res.status(400).json({ message: "O campo id da sala é obrigatório." });
+                return;
+            }
+
+            if (id === 'building/' || id === 'building') {
+                //para get rooms by building
+                res.status(400).json({ message: 'O campo id do prédio é obrigatório.'});
                 return;
             }
 
@@ -237,6 +243,10 @@ export class RoomController {
                 res.status(404).json({ message: error.message });
                 return;
             }
+            if (error.message === "Uma sala com este nome já existe.") {
+                res.status(409).json({ message: error.message });
+                return;
+            }
             res.status(500).json({ message: "Erro ao editar a sala", error: error.message });
         }
     };
@@ -260,7 +270,7 @@ export class RoomController {
             const deleted = await this.roomService.deleteOneRoom(Number(id));
     
             if (deleted) {
-                res.status(204).json({ message: `Sala com id ${id} excluída com sucesso.` });
+                res.status(200).json({ message: `Sala com id ${id} excluída com sucesso.` });
                 return;
             } else {
                 res.status(404).json({ message: `Sala com id ${id} não encontrada.` });
@@ -278,7 +288,7 @@ export class RoomController {
             const users = await this.roomService.getUsersByRoom(Number(room_id));
 
             if (!users) {
-                res.status(204).json({ message: "Não há usuários registrados nesta sala" });
+                res.status(200).json({ message: "Não há usuários registrados nesta sala" });
                 return;
             }
 
@@ -305,11 +315,11 @@ export class RoomController {
 
             res.status(201).json(user_room);
         } catch (error: any) {
-            if (error.message === "Id da sala não encontrado") {
+            if (error.message.startsWith("Sala com id ")) {
                 res.status(404).json({ message: error.message });
                 return;
             }
-            if (error.message === "Id do usuário não encontrado") {
+            if (error.message.startsWith("Usuário com id ")) {
                 res.status(404).json({ message: error.message });
                 return;
             }
@@ -323,10 +333,10 @@ export class RoomController {
             const deleted = await this.roomService.deleteUserFromRoom(Number(room_id), user_id);
     
             if (deleted) {
-                res.status(204).json({ message: `Usuário com ID ${user_id} excluído da sala com sucesso.` });
+                res.status(200).json({ message: `Usuário com id ${user_id} excluído da sala com sucesso.` });
                 return;
             } else {
-                res.status(404).json({ message: `Usuário ou sala não encontrados.` });
+                res.status(404).json({ message: `Usuário ou sala não encontrados.` }); //TODO
                 return;
             }
 
