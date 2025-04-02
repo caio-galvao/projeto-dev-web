@@ -1,5 +1,6 @@
 import express = require("express");
 import * as dotenv from "dotenv";
+import cors from "cors";
 import sequelize from "./config/database";
 import { userRoutes } from "./routes/userRoutes";
 import { companyRoutes } from "./routes/companyRoutes";
@@ -15,6 +16,12 @@ dotenv.config();
 
 const app = express();
 app.use(express.json());
+
+app.use(cors({
+    origin: process.env.FRONTEND_URL || 'http://localhost:8080',
+    methods: ['GET', 'POST', 'PUT', 'DELETE'],
+    credentials: true
+}));
 
 app.use('/auth', authRoutes);
 app.use("/users", userRoutes); 
@@ -32,4 +39,3 @@ sequelize.sync({ alter: true }).then(() => {
 }).catch((error) => {
     console.error("Erro ao conectar ao banco de dados:", error);
 });
-
