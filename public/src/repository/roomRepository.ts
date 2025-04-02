@@ -1,4 +1,6 @@
 import { Room } from "../models/Room";
+import { RoomUser } from "../models/RoomUser";
+import { Op } from 'sequelize';
 import { Building } from "../models/Building";
 import { User } from "../models/User";
 
@@ -62,6 +64,18 @@ export class RoomRepository {
         }
     }
 
+    async getRoomByName(name: string) {
+        try {
+            const room = await Room.findOne({ where: { name } })
+            if (!room) {
+                return null;
+            }
+            return room;
+        } catch (error: any) {
+            throw new Error(`Erro ao buscar sala com nome ${name}: ${error.message}`);
+        }
+    }
+
     async updateRoom(id: number, updatedData: Partial<{ building_id: number, manager_id: string, name: string, schedule: string, workspace_config: string, equipments: string[] }>) {
         try {
             const room = await this.getRoomById(id);
@@ -88,16 +102,45 @@ export class RoomRepository {
         }
     }
 
-    // async getUsersByRoom(id: number): Promise<User[] | null> {
-    //     try {
-    //         const users = await UserRooms.findAll({ where: { roomId : id }, include: [User] });
-    //         if (users.length === 0) {
-    //             return null;
-    //         }
-    //         return users.map(users => users.get('User') as User);
-    //     } catch (error: any) {
-    //         throw new Error(`Erro ao listar usuários da sala com ID ${id}: ${error.message}`);
-    //     }
-    // }
+    async getUsersByRoom(id: number): Promise<User[] | null> {
+        try {
+            const room_users = await RoomUser.findAll({ where: { room_id : id } });
+            if (room_users.length === 0) {
+                return null;
+            }
 
+            const userIds = room_users.map(entry => entry.getDataValue('user_id'));
+            const users = await User.findAll({ where: { id: { [Op.in]: userIds } } });
+
+            return users;        
+        } catch (error: any) {
+            throw new Error(`Erro ao listar usuários da sala com ID ${id}: ${error.message}`);
+        }
+    }
+
+    async addUserInRoom(room_id: number, user_id: string): Promise<RoomUser | null> {
+        try {
+            const existingUserRoom = await RoomUser.findOne({ where: { room_id, user_id } }) 
+            if (existingUserRoom) {
+                return null;
+            }
+            const room_user = await RoomUser.create({room_id, user_id});
+            return room_user;
+        } catch (error: any) {
+            throw new Error(`Erro ao adicionar usuário com ID ${user_id} da sala com ID ${room_id}: ${error.message}`);
+        }
+    }
+
+    async deleteUserFromRoom(room_id: number, user_id: string) {
+        try {
+            const room_user = await RoomUser.findOne({ where: { room_id, user_id } }) 
+            if (!room_user) {
+                return false;
+            }
+            await room_user.destroy();
+            return true;
+        } catch (error: any) {
+            throw new Error(`Erro ao excluir usuário com ID ${user_id} da sala com ID ${room_id}: ${error.message}`);
+        }
+    }
 }

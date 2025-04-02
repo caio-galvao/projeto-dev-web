@@ -1,4 +1,4 @@
-import express from "express";
+import express = require("express");
 import * as dotenv from "dotenv";
 import cors from "cors";
 import sequelize from "./config/database";
@@ -8,7 +8,6 @@ import { buildingRoutes } from "./routes/buildingRoutes";
 import { roomRoutes } from "./routes/roomRoutes";
 import { workspaceRoutes } from "./routes/workspaceRoutes";
 import { reserveRoutes } from "./routes/reserveRoutes";
-import { authenticate } from './middlewares/authMiddleware';
 import authRoutes from './routes/authRoutes';
 
 console.log("🚀 Servidor rodando...");
@@ -30,10 +29,11 @@ app.use("/company", companyRoutes);
 app.use("/building", buildingRoutes);
 app.use("/room", roomRoutes);
 app.use("/workspace", workspaceRoutes);
-app.use("/reserve", reserveRoutes);  
+app.use("/reserve", reserveRoutes);
 
-// Testando a conexão e inicializando o servidor
-sequelize.sync({ force: true }).then(() => {
+export default app;
+
+sequelize.sync({ alter: true }).then(() => {
     console.log("Banco de dados conectado!");
     app.listen(3000, () => console.log("Servidor rodando na porta 3000"));
 }).catch((error) => {

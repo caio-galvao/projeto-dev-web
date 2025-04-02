@@ -48,5 +48,5 @@ Workspace.init(
     }
 );
 
-Workspace.belongsTo(Room, { foreignKey: 'room_id', as: 'infra' });
+Workspace.belongsTo(Room, { foreignKey: 'room_id', as: 'infraRoom' });
 Room.hasMany(Workspace, { foreignKey: 'room_id', as: 'roomWorkspace' });

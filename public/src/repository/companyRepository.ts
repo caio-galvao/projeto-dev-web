@@ -28,7 +28,7 @@ export class CompanyRepository {
         }
     }
 
-    // Obter uma empresa pelo ID
+    // Obter uma empresa pelo id
     async getCompanyById(id: number) {
         try {
             const company = await Company.findByPk(id);
@@ -37,7 +37,7 @@ export class CompanyRepository {
             }
             return company;
         } catch (error: any) {
-            throw new Error(`Erro ao buscar empresa com ID ${id}: ${error.message}`);
+            throw new Error(`Erro ao buscar empresa com id ${id}: ${error.message}`);
         }
     }
 
@@ -51,7 +51,7 @@ export class CompanyRepository {
             await company.update(updatedData);
             return company;
         } catch (error: any) {
-            throw new Error(`Erro ao atualizar empresa com ID ${id}: ${error.message}`);
+            throw new Error(`Erro ao atualizar empresa com id ${id}: ${error.message}`);
         }
     }
 
@@ -65,7 +65,7 @@ export class CompanyRepository {
             await company.destroy();
             return true;
         } catch (error: any) {
-            throw new Error(`Erro ao excluir empresa com ID ${id}: ${error.message}`);
+            throw new Error(`Erro ao excluir empresa com id ${id}: ${error.message}`);
         }
     }
 }

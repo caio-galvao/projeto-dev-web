@@ -1,6 +1,6 @@
-import bcrypt from 'bcryptjs';
-import jwt from 'jsonwebtoken';
-import dotenv from 'dotenv';
+import * as bcrypt from "bcryptjs";
+import * as jwt from "jsonwebtoken";
+import * as dotenv from "dotenv";
 
 dotenv.config();
 
@@ -19,8 +19,8 @@ string): Promise<boolean> => {
 };
 
 // Função para gerar um token JWT
-export const generateToken = (userId: string, username: string): string => {
-    return jwt.sign({ id: userId, username }, JWT_SECRET, { expiresIn: '1h' });
+export const generateToken = (userId: string, username: string, userType: string): string => {
+    return jwt.sign({ id: userId, username, role: userType }, JWT_SECRET, { expiresIn: '1h' });
 };
 
 // Função para verificar um token JWT
