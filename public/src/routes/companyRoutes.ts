@@ -12,6 +12,8 @@ companyRoutes.post("/", authenticate, authorize(['master', 'ultra']), (req, res)
 
 companyRoutes.get("/:id", authenticate, (req, res) => CompanyController.getOneCompany(req, res));
 
+companyRoutes.get("/manager/:manager_id", authenticate, authorize(['master', 'ultra']), (req, res) => CompanyController.getCompaniesByManager(req, res));
+
 companyRoutes.put("/:id", 
     authenticate, 
     authorize(['master', 'ultra'], authorizeByCompanyId),

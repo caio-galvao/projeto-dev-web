@@ -30,6 +30,16 @@ export class CompanyService {
         return company;
     }
 
+    async getCompaniesByManager(manager_id: string): Promise<Company[] | null> {
+        const manager = await this.userService.getOneUser(manager_id)
+        if (!manager) {
+            throw new Error(`Gerente com id ${manager_id} não encontrado.`);
+        }
+
+        const companies = await this.companyRepository.getCompaniesByManager(manager_id);
+        return companies;
+    }
+
     async editOneCompany(id: number, name: string, manager_id: string, location: string): Promise<Company | null> {
         const manager = await this.userService.getOneUser(manager_id)
         if (!manager) {
