@@ -101,6 +101,37 @@ export class BuildingController {
         }
     };
 
+    async getBuildingByRegisteredUser(req: Request, res: Response): Promise<void> {
+        try {
+            const { user_id } = req.params;
+
+            if (!user_id) {
+                res.status(400).json({ message: "O campo id do usuário é obrigatório." });
+                return;
+            }
+            const cpfRegex = /^\d{3}\.\d{3}\.\d{3}\-\d{2}$/;
+            if (!cpfRegex.test(user_id)) {
+                res.status(400).json({ message: "O campo id do usuário deve estar no formato XXX.XXX.XXX-XX." });
+                return;
+            }
+
+            const buildings = await this.buildingService.getBuildingsByRegisteredUser(user_id);
+
+            if (!buildings) {
+                res.status(200).json({ message: `Não há prédios em que o usuário com id ${user_id} está registrado.` });
+                return;
+            }
+
+            res.json(buildings);
+        } catch (error: any) {
+            if (error.message.startsWith('Usuário com id ')) {
+                res.status(404).json({ message: error.message });
+            } else {
+                res.status(500).json({ message: "Erro ao obter os prédios", error: error.message });
+            }
+        }
+    };
+
     async getOneBuilding(req: Request, res: Response): Promise<void> {
         try {
             const { id } = req.params;

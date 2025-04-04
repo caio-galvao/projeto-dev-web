@@ -15,6 +15,8 @@ buildingRoutes.get("/company/:company_id", authenticate, authorize(['admin', 'ma
 
 buildingRoutes.get("/manager/:manager_id", authenticate, authorize(['master', 'ultra']), (req, res) => BuildingController.getBuildingByManager(req, res));
 
+buildingRoutes.get("/user/:user_id", authenticate, (req, res) => BuildingController.getBuildingByRegisteredUser(req, res));
+
 buildingRoutes.get("/:id", authenticate, (req, res) => BuildingController.getOneBuilding(req, res));
 
 buildingRoutes.put("/:id", 

@@ -118,6 +118,22 @@ export class RoomRepository {
         }
     }
 
+    async getRoomsByUser(user_id: string): Promise<Room[] | null> {
+        try {
+            const room_users = await RoomUser.findAll({ where: { user_id : user_id } });
+            if (room_users.length === 0) {
+                return null;
+            }
+
+            const roomIds = room_users.map(entry => entry.getDataValue('room_id'));
+            const rooms = await Room.findAll({ where: { id: { [Op.in]: roomIds } } });
+
+            return rooms;        
+        } catch (error: any) {
+            throw new Error(`Erro ao listar salas do usuário com ID ${user_id}: ${error.message}`);
+        }
+    }
+
     async addUserInRoom(room_id: number, user_id: string): Promise<RoomUser | null> {
         try {
             const existingUserRoom = await RoomUser.findOne({ where: { room_id, user_id } }) 

@@ -1,14 +1,17 @@
 import { CompanyRepository } from "../repository/companyRepository";
 import { Company } from "../models/Company"
 import { UserService } from "./userService";
+import { BuildingService } from "./buildingService";
 
 export class CompanyService {
     private companyRepository: CompanyRepository;
     private userService: UserService;
+    private buildingService: BuildingService;
 
     constructor() {
         this.companyRepository = new CompanyRepository();
         this.userService = new UserService();
+        this.buildingService = new BuildingService();
     }
 
     async createCompany( name: string, manager_id: string, location: string): Promise<Company | null> {
@@ -37,6 +40,26 @@ export class CompanyService {
         }
 
         const companies = await this.companyRepository.getCompaniesByManager(manager_id);
+        return companies;
+    }
+
+    async getCompaniesByRegisteredUser(user_id: string): Promise<Company[] | null> {
+        const buildings = await this.buildingService.getBuildingsByRegisteredUser(user_id)
+
+        if (!buildings) {
+            return null;
+        }
+
+        let companies: Company[] = [];
+
+        for (const building of buildings) {
+            const company = await this.getOneCompany(building.company_id);
+            if (!company) {
+                continue;
+            }
+            companies.push(company);
+        }
+        
         return companies;
     }
 
