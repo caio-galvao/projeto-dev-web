@@ -1,10 +1,8 @@
 import { RoomRepository } from "../repository/roomRepository";
-import { BuildingService } from "./buildingService";
 import { UserService } from "./userService";
 
 import { Room } from "../models/Room"
 import { RoomUser } from "../models/RoomUser"
-import { User } from "../models/User"
 import {UserDTO} from "../dto/userDTO"
 import { WorkspaceRepository } from "../repository/workspaceRepository";
 import { BuildingRepository } from "../repository/buildingRepository";

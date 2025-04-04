@@ -116,6 +116,39 @@ export class ReserveController {
         }
     };
 
+    async getReservesByRoomTimestamp(req: Request, res: Response): Promise<void> {
+        try {
+            const { room_id,  } = req.params;
+
+            const { timestamp } = req.body;
+
+            if (!room_id) {
+                res.status(400).json({ message: "O campo id do usuário é obrigatório." });
+                return;
+            }
+
+            if (!timestamp) {
+                res.status(400).json({ message: "O campo timestamp é obrigatório." });
+                return;
+            }
+
+            const reserves = await this.reserveService.getReservesByRoomTimestamp(Number(room_id), timestamp);
+
+            if (!reserves) {
+                res.status(200).json({ message: `Não há reservas registradas para a sala com id ${room_id} no timestamp ${timestamp}` });
+                return;
+            }
+
+            res.json(reserves);
+        } catch (error: any) {
+            if (error.message.startsWith('Sala com ID ')) {
+                res.status(404).json({ message: error.message });
+            } else {
+                res.status(500).json({ message: "Erro ao obter as reservas", error: error.message });
+            }
+        }
+    };
+
     async getOneReserve(req: Request, res: Response): Promise<void> {
         try {
             const { id } = req.params;

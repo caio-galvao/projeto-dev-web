@@ -15,6 +15,8 @@ reserveRoutes.get("/workspace/:workspace_id", authenticate, (req, res) => Reserv
 
 reserveRoutes.get("/user/:user_id", authenticate, (req, res) => ReserveController.getReservesByUser(req, res));
 
+reserveRoutes.get("/room/:room_id/timestamp/", authenticate, (req, res) => ReserveController.getReservesByRoomTimestamp(req, res));
+
 reserveRoutes.get("/:id", authenticate, (req, res) => ReserveController.getOneReserve(req, res));
 
 reserveRoutes.delete("/:id", 
