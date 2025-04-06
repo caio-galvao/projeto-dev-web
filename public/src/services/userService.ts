@@ -33,7 +33,8 @@ export class UserService {
     }
 
     async editOneUser(id: string, name: string, password: string, type: string): Promise<UserDTO | null> {
-        const user = await this.userRepository.updateUser(id, { name, password, type })
+        const hashedPassword = await hashPassword(password)
+        const user = await this.userRepository.updateUser(id, { name, password:hashedPassword, type })
         if (!user) return null;
         return new UserDTO(user);
     }
