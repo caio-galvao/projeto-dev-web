@@ -17,11 +17,14 @@ dotenv.config();
 const app = express();
 app.use(express.json());
 
+/*
 app.use(cors({
     origin: process.env.FRONTEND_URL || 'http://localhost:8080',
     methods: ['GET', 'POST', 'PUT', 'DELETE'],
+    allowedHeaders: ['Content-Type', 'Authorization'],
     credentials: true
 }));
+*/
 
 app.use('/auth', authRoutes);
 app.use("/users", userRoutes); 
