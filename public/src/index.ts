@@ -1,6 +1,5 @@
 import express = require("express");
 import * as dotenv from "dotenv";
-import cors from "cors";
 import sequelize from "./config/database";
 import { userRoutes } from "./routes/userRoutes";
 import { companyRoutes } from "./routes/companyRoutes";
