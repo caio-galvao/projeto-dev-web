@@ -88,6 +88,68 @@ export class CompanyController {
         }
     }
 
+    async getCompaniesByManager(req: Request, res: Response): Promise<void> {
+        try {
+            const { manager_id } = req.params;
+
+            if (!manager_id) {
+                res.status(400).json({ message: "O campo id do gerente é obrigatório." });
+                return;
+            }
+            const cpfRegex = /^\d{3}\.\d{3}\.\d{3}\-\d{2}$/;
+            if (!cpfRegex.test(manager_id)) {
+                res.status(400).json({ message: "O campo id do gerente deve estar no formato XXX.XXX.XXX-XX." });
+                return;
+            }
+
+            const companies = await this.companyService.getCompaniesByManager(manager_id);
+
+            if (!companies) {
+                res.status(200).json({ message: `Não há empresas registradas para o gerente com id ${manager_id}` });
+                return;
+            }
+
+            res.json(companies);
+        } catch (error: any) {
+            if (error.message.startsWith('Gerente com id ')) {
+                res.status(404).json({ message: error.message });
+            } else {
+                res.status(500).json({ message: "Erro ao obter as empresas", error: error.message });
+            }
+        }
+    };
+
+    async getCompaniesByRegisteredUser(req: Request, res: Response): Promise<void> {
+        try {
+            const { user_id } = req.params;
+
+            if (!user_id) {
+                res.status(400).json({ message: "O campo id do usuário é obrigatório." });
+                return;
+            }
+            const cpfRegex = /^\d{3}\.\d{3}\.\d{3}\-\d{2}$/;
+            if (!cpfRegex.test(user_id)) {
+                res.status(400).json({ message: "O campo id do usuário deve estar no formato XXX.XXX.XXX-XX." });
+                return;
+            }
+
+            const companies = await this.companyService.getCompaniesByRegisteredUser(user_id);
+
+            if (!companies) {
+                res.status(200).json({ message: `Não há empresas em que o usuário com id ${user_id} está registrado.` });
+                return;
+            }
+
+            res.json(companies);
+        } catch (error: any) {
+            if (error.message.startsWith('Usuário com id ')) {
+                res.status(404).json({ message: error.message });
+            } else {
+                res.status(500).json({ message: "Erro ao obter as empresas", error: error.message });
+            }
+        }
+    };
+
     async editOneCompany(req: Request, res: Response): Promise<void> {
         try {
             const { id } = req.params;

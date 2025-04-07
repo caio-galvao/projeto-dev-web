@@ -41,6 +41,20 @@ export class CompanyRepository {
         }
     }
 
+    async getCompaniesByManager(manager_id: string) {
+        try {
+            const companies = await Company.findAll({
+                where: { manager_id }
+            });
+            if (companies.length === 0) {
+                return null;
+            }
+            return companies;
+        } catch (error: any) {
+            throw new Error(`Erro ao listar empresas: ${error.message}`);
+        }
+    }
+
     // Atualizar uma empresa
     async updateCompany(id: number, updatedData: Partial<{ name: string, manager_id: string, location: string}>) {
         try {

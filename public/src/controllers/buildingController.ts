@@ -68,6 +68,70 @@ export class BuildingController {
         }
     };
 
+    async getBuildingByManager(req: Request, res: Response): Promise<void> {
+        try {
+            const { manager_id } = req.params;
+
+            if (!manager_id) {
+                res.status(400).json({ message: "O campo id do gerente é obrigatório." });
+                return;
+            }
+            const cpfRegex = /^\d{3}\.\d{3}\.\d{3}\-\d{2}$/;
+            if (!cpfRegex.test(manager_id)) {
+                res.status(400).json({ message: "O campo id do gerente deve estar no formato XXX.XXX.XXX-XX." });
+                return;
+            }
+
+            const buildings = await this.buildingService.getBuildingsByManager(manager_id);
+
+            if (!buildings) {
+                res.status(200).json({ message: `Não há prédios registrados para o gerente com id ${manager_id}` });
+                return;
+            }
+
+            res.json(buildings);
+        } catch (error: any) {
+            if (error.message.startsWith('Não há empresas ')) {
+                res.status(200).json({ message: error.message });
+            } else if (error.message.startsWith('Gerente com id ')) {
+                res.status(404).json({ message: error.message });
+            } else {
+                res.status(500).json({ message: "Erro ao obter os prédios", error: error.message });
+            }
+        }
+    };
+
+    async getBuildingByRegisteredUser(req: Request, res: Response): Promise<void> {
+        try {
+            const { user_id } = req.params;
+
+            if (!user_id) {
+                res.status(400).json({ message: "O campo id do usuário é obrigatório." });
+                return;
+            }
+            const cpfRegex = /^\d{3}\.\d{3}\.\d{3}\-\d{2}$/;
+            if (!cpfRegex.test(user_id)) {
+                res.status(400).json({ message: "O campo id do usuário deve estar no formato XXX.XXX.XXX-XX." });
+                return;
+            }
+
+            const buildings = await this.buildingService.getBuildingsByRegisteredUser(user_id);
+
+            if (!buildings) {
+                res.status(200).json({ message: `Não há prédios em que o usuário com id ${user_id} está registrado.` });
+                return;
+            }
+
+            res.json(buildings);
+        } catch (error: any) {
+            if (error.message.startsWith('Usuário com id ')) {
+                res.status(404).json({ message: error.message });
+            } else {
+                res.status(500).json({ message: "Erro ao obter os prédios", error: error.message });
+            }
+        }
+    };
+
     async getOneBuilding(req: Request, res: Response): Promise<void> {
         try {
             const { id } = req.params;

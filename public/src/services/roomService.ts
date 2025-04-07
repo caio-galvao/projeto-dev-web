@@ -1,29 +1,28 @@
 import { RoomRepository } from "../repository/roomRepository";
-import { BuildingService } from "./buildingService";
 import { UserService } from "./userService";
 
 import { Room } from "../models/Room"
 import { RoomUser } from "../models/RoomUser"
-import { User } from "../models/User"
 import {UserDTO} from "../dto/userDTO"
 import { WorkspaceRepository } from "../repository/workspaceRepository";
+import { BuildingRepository } from "../repository/buildingRepository";
+
 
 export class RoomService {
     private roomRepository: RoomRepository;
-    private buildingService: BuildingService;
     private userService: UserService;
-    private workspaceRepository: any;
+    private workspaceRepository: WorkspaceRepository;
+    private buildingRepository: BuildingRepository;
 
     constructor() {
         this.roomRepository = new RoomRepository();
         this.workspaceRepository = new WorkspaceRepository();
-        this.buildingService = new BuildingService();
+        this.buildingRepository = new BuildingRepository();
         this.userService = new UserService();
-
     }
  
     async createRoom(building_id: number, manager_id: string, name: string, schedule: string, workspace_config: string, equipments: Array<string>): Promise<Room | null> {
-        const building = await this.buildingService.getOneBuilding(building_id);
+        const building = await this.buildingRepository.getBuildingById(building_id);
         if (!building) {
             throw new Error("Id do prédio não encontrado");
         }
@@ -65,7 +64,7 @@ export class RoomService {
     }
 
     async editOneRoom(id: number, building_id: number, manager_id: string, name: string, schedule: string, workspace_config: string, equipments: string[]): Promise<Room | null> {
-        const building = await this.buildingService.getOneBuilding(building_id);
+        const building = await this.buildingRepository.getBuildingById(building_id);
         if (!building) {
             throw new Error("Id do prédio não encontrado");
         }
@@ -93,6 +92,17 @@ export class RoomService {
         if (!users) return null;
 
         return users.map(user => new UserDTO(user));
+    }
+
+    async getRoomsByUser(user_id: string): Promise<Room[] | null> {
+        const user = await this.userService.getOneUser(user_id);
+        if (!user) {
+            throw new Error("Id do usuário não encontrado");
+        }
+        const rooms = await this.roomRepository.getRoomsByUser(user_id);
+        if (!rooms) return null;
+
+        return rooms;
     }
 
     async addUserInRoom(room_id: number, user_id: string): Promise<RoomUser | null> {
