@@ -24,7 +24,7 @@ export class WorkspaceController {
             const workspaces = await this.workspaceService.getWorkspacesByRoom(Number(room_id));
 
             if (!workspaces) {
-                res.status(204).json({ message: `Não há espaços de trabalho registrados para esta sala ${room_id}` });
+                res.status(200).json({ message: `Não há espaços de trabalho registrados para esta sala ${room_id}` });
                 return;
             }
 
@@ -97,16 +97,18 @@ export class WorkspaceController {
             const workspace = await this.workspaceService.editOneWorkspace(Number(id), Number(room_id), position, equipments);
 
             if (!workspace) {
-                res.status(404).json({ message: `Espaço de trabalho com ID ${id} não encontrado.` });
+                res.status(404).json({ message: `Espaço de trabalho com id ${id} não encontrado.` });
                 return;
             }
 
             res.status(201).json(workspace);
         } catch (error: any) {
-            if (error.message === `Id da sala inválido`) {
-                res.status(400).json({ message: error.message });
+            if (error.message === `Id da sala não encontrado.`) {
+                res.status(404).json({ message: error.message });
+            } else if (error.message.startsWith(`Posição`)) {
+                res.status(409).json({ message: error.message });
             } else {
-                res.status(500).json({ message: "Erro ao editar o espaço de trabalho", error: error.message });
+                res.status(500).json({ message: error.message });
             }
         }
     }

@@ -1,23 +1,28 @@
 import { RoomRepository } from "../repository/roomRepository";
-import { BuildingService } from "./buildingService";
 import { UserService } from "./userService";
 
 import { Room } from "../models/Room"
+import { RoomUser } from "../models/RoomUser"
+import {UserDTO} from "../dto/userDTO"
+import { WorkspaceRepository } from "../repository/workspaceRepository";
+import { BuildingRepository } from "../repository/buildingRepository";
+
 
 export class RoomService {
     private roomRepository: RoomRepository;
-    private buildingService: BuildingService;
     private userService: UserService;
+    private workspaceRepository: WorkspaceRepository;
+    private buildingRepository: BuildingRepository;
 
     constructor() {
         this.roomRepository = new RoomRepository();
-        this.buildingService = new BuildingService();
+        this.workspaceRepository = new WorkspaceRepository();
+        this.buildingRepository = new BuildingRepository();
         this.userService = new UserService();
-
     }
  
     async createRoom(building_id: number, manager_id: string, name: string, schedule: string, workspace_config: string, equipments: Array<string>): Promise<Room | null> {
-        const building = await this.buildingService.getOneBuilding(building_id);
+        const building = await this.buildingRepository.getBuildingById(building_id);
         if (!building) {
             throw new Error("Id do prédio não encontrado");
         }
@@ -25,7 +30,22 @@ export class RoomService {
         if (!manager) {
             throw new Error("Id do gerente não encontrado");
         }
-        return this.roomRepository.createRoom(building_id, manager_id, name, schedule, workspace_config, equipments)
+
+        const room = await this.roomRepository.createRoom(building_id, manager_id, name, schedule, workspace_config, equipments)
+
+        if (!room) {
+            return null;
+        }
+
+        const workspaces_by_row = workspace_config.split(',').map(pair => pair.split(':')[1]);
+        const num_workspaces = workspaces_by_row.map(Number).reduce((accumulator, currentValue) => accumulator + currentValue, 0);        
+
+        var i: number = 0
+        for (i; i < num_workspaces; i++) {
+            await this.workspaceRepository.createWorkspace(room.id, i+1, []);
+        }
+
+        return room;
     }
 
     async getRoomsByBuilding(building_id: number): Promise<Room[] | null> {
@@ -44,7 +64,7 @@ export class RoomService {
     }
 
     async editOneRoom(id: number, building_id: number, manager_id: string, name: string, schedule: string, workspace_config: string, equipments: string[]): Promise<Room | null> {
-        const building = await this.buildingService.getOneBuilding(building_id);
+        const building = await this.buildingRepository.getBuildingById(building_id);
         if (!building) {
             throw new Error("Id do prédio não encontrado");
         }
@@ -52,10 +72,52 @@ export class RoomService {
         if (!manager) {
             throw new Error("Id do gerente não encontrado");
         }
+        const roomWithName = await this.roomRepository.getRoomByName(name);
+        if (roomWithName && roomWithName.id != id) {
+            throw new Error("Uma sala com este nome já existe.");
+        }
         return this.roomRepository.updateRoom(id, { building_id, manager_id, name, schedule, workspace_config, equipments })
     }
 
     async deleteOneRoom(id: number): Promise<boolean> {
         return this.roomRepository.deleteRoom(id)
+    }
+
+    async getUsersByRoom(id: number): Promise<UserDTO[] | null> {
+        const room = await this.getOneRoom(id);
+        if (!room) {
+            throw new Error("Id da sala não encontrado");
+        }
+        const users = await this.roomRepository.getUsersByRoom(id);
+        if (!users) return null;
+
+        return users.map(user => new UserDTO(user));
+    }
+
+    async getRoomsByUser(user_id: string): Promise<Room[] | null> {
+        const user = await this.userService.getOneUser(user_id);
+        if (!user) {
+            throw new Error("Id do usuário não encontrado");
+        }
+        const rooms = await this.roomRepository.getRoomsByUser(user_id);
+        if (!rooms) return null;
+
+        return rooms;
+    }
+
+    async addUserInRoom(room_id: number, user_id: string): Promise<RoomUser | null> {
+        const room = await this.getOneRoom(room_id);
+        if (!room) {
+            throw new Error(`Sala com id ${room_id} não encontrada.`);
+        }
+        const user = await this.userService.getOneUser(user_id);
+        if (!user) {
+            throw new Error(`Usuário com id ${user_id} não encontrado.`);
+        }
+        return this.roomRepository.addUserInRoom(room_id, user_id)
+    }
+
+    async deleteUserFromRoom(room_id: number, user_id: string): Promise<boolean> {
+        return this.roomRepository.deleteUserFromRoom(room_id, user_id)
     }
 }
